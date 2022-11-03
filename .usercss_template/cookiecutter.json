@@ -1,0 +1,9 @@
+{
+    "name": "custom_css",
+    "version": "0.0.1",
+    "license": "MIT",
+    "preprocessor": ["default", "uso", "less", "stylus"],
+    "repository_host": "https://github.com",
+    "repository_name": "ilyachch/userscripts",
+    "repository": "{{cookiecutter.repository_host}}/{{cookiecutter.repository_name}}",
+}

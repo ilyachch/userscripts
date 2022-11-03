@@ -3,6 +3,7 @@
 ## CSS
 
 https://github.com/openstyles/stylus/wiki/Usercss
+https://github.com/openstyles/stylus/wiki/Writing-UserCSS
 
 
 ## JS

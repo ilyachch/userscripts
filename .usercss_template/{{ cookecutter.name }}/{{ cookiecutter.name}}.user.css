@@ -1,0 +1,11 @@
+/* ==UserStyle==
+@name         {{ cookiecutter.name }} style
+@namespace    {{ cookiecutter.repository_name }}
+@version      {{ cookiecutter.version }}
+@license      {{ cookiecutter.license }}
+@preprocessor {{ cookiecutter.preprocessor }}
+@homepageURL  {{ cookiecutter.repository }}
+@supportURL   {{ cookiecutter.repository }}/issues
+@updateURL    {{ cookiecutter.repository }}/blob/main/usercss/{{ cookiecutter.name }}/{{ cookiecutter.name }}.user.css
+==/UserStyle== */
+
