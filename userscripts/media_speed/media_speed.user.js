@@ -17,7 +17,7 @@
 const STYLE = `
 .speed-control {
     position: absolute;
-    top: 5rem;
+    bottom: 5rem;
     left: 2.5rem;
     border-radius: 0.5rem;
     z-index: 9999;
@@ -48,26 +48,32 @@ const STYLE = `
     GM_addStyle(STYLE);
     patch();
     document.addEventListener("DOMSubtreeModified", patch);
-      let hide_timeout = setTimeout(function () {
-        for (let speed_control of document.querySelectorAll(".speed-control.visible")) {
-          speed_control.classList.remove("visible");
+    let hide_timeout = setTimeout(function () {
+        for (let speed_control of document.querySelectorAll(
+            ".speed-control.visible"
+        )) {
+            speed_control.classList.remove("visible");
         }
-      }, 2000);
+    }, 2000);
 
-      document.addEventListener("mousemove", function (e) {
-        let speed_controls = document.querySelectorAll(".speed-control:not(.visible)");
+    document.addEventListener("mousemove", function (e) {
+        let speed_controls = document.querySelectorAll(
+            ".speed-control:not(.visible)"
+        );
         for (let speed_control of speed_controls) {
-          if (!speed_control.classList.contains("visible")) {
-            speed_control.classList.add("visible");
-          }
+            if (!speed_control.classList.contains("visible")) {
+                speed_control.classList.add("visible");
+            }
         }
         clearTimeout(hide_timeout);
         hide_timeout = setTimeout(function () {
-            for (let speed_control of document.querySelectorAll(".speed-control.visible")) {
-              speed_control.classList.remove("visible");
+            for (let speed_control of document.querySelectorAll(
+                ".speed-control.visible"
+            )) {
+                speed_control.classList.remove("visible");
             }
-          }, 2000);
-      });
+        }, 2000);
+    });
 })();
 
 function patch() {
@@ -85,12 +91,7 @@ function patch() {
         let speed_control = create_speed_control(media_element);
         media_element.parentElement.appendChild(speed_control);
         media_element.addEventListener("play", function () {
-            let speed_control_input = media_element.parentElement.querySelector(
-                ".speed-control speed-control-option__selected"
-            );
-            if (media_element.playbackRate != speed_control_input.innerText) {
-                media_element.playbackRate = speed_control_input.innerText;
-            }
+            media_element.playbackRate = get_speed();
         });
     }
 }
@@ -102,18 +103,19 @@ function create_speed_control(media_element) {
     speed_control_label.innerText = "Speed:";
     speed_control.appendChild(speed_control_label);
 
+    let speed = get_speed();
+
     let container = document.createElement("span");
     let choices = [1, 1.5, 2, 2.5, 3, 4, 5];
     for (let choice of choices) {
         let option = document.createElement("span");
         option.classList.add("speed-control-option");
-        if (media_element.playbackRate == choice) {
+        if (speed == choice) {
             option.classList.add("speed-control-option__selected");
         }
         option.innerText = choice;
         container.appendChild(option);
         option.addEventListener("click", function (e) {
-            console.log(e);
             e.preventDefault();
             e.stopPropagation();
             media_element.playbackRate = choice;
@@ -123,8 +125,17 @@ function create_speed_control(media_element) {
                 option.classList.remove("speed-control-option__selected");
             }
             option.classList.add("speed-control-option__selected");
+            save_speed(choice);
         });
     }
     speed_control.appendChild(container);
     return speed_control;
+}
+
+function save_speed(speed) {
+    localStorage.setItem("user_media_speed", parseFloat(speed));
+}
+
+function get_speed() {
+    return parseFloat(localStorage.getItem("user_media_speed") || 1);
 }
