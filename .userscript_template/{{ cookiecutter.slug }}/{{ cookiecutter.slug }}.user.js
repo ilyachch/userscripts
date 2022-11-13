@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         {{ cookiecutter.name }} style
+// @name         {{ cookiecutter.name }} script
 // @namespace    {{ cookiecutter.repository_name }}
 // @version      {{ cookiecutter.version }}
 // @description  {{ cookiecutter.description }}
@@ -9,9 +9,6 @@
 // @updateURL    {{ cookiecutter.update_url }}
 // @downloadURL  {{ cookiecutter.update_url }}
 // @license      {{ cookiecutter.license }}
-
-
-// @include      {{ cookiecutter.include }}
 
 // @noframes ???
 // @unwrap ???
@@ -24,3 +21,8 @@
 // @icon         *
 // ==/UserScript==
 
+(function() {
+    'use strict';
+
+    // Your code here...
+})();

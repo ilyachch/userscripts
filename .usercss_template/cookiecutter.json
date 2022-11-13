@@ -1,7 +1,7 @@
 {
     "name": "Custom CSS",
     "slug": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
-    "namespace": "ilyachch/userscripts/user_styles",
+    "namespace": "ilyachch/userscripts/styles",
     "version": "0.0.1",
     "description": "Custom CSS - {{ cookiecutter.name }}",
     "license": "MIT",

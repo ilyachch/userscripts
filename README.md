@@ -9,6 +9,7 @@ https://github.com/openstyles/stylus/wiki/Writing-UserCSS
 ## JS
 
 https://wiki.greasespot.net/Metadata_Block
+https://www.tampermonkey.net/documentation.php#_match
 
 repos:
 * https://openuserjs.org/
