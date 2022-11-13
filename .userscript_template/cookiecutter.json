@@ -1,14 +1,15 @@
 {
-    "name": "Custom CSS",
+    "name": "Custom Script",
     "slug": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
-    "namespace": "ilyachch/userscripts/user_styles",
+
+    "namespace": "ilyachch/userscripts/user_scripts",
     "version": "0.0.1",
-    "description": "Custom CSS - {{ cookiecutter.name }}",
+    "description": "Custom Script - {{ cookiecutter.name }}",
     "license": "MIT",
     "preprocessor": ["default", "uso", "less", "stylus"],
     "repository_host": "https://github.com",
     "repository_name": "ilyachch/userscripts",
     "repository": "{{cookiecutter.repository_host}}/{{cookiecutter.repository_name}}",
-    "update_url": "https://raw.githubusercontent.com/{{ cookiecutter.repository_name }}/main/usercss/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
+    "update_url": "https://raw.githubusercontent.com/{{ cookiecutter.repository_name }}/main/userscripts/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
     "author": "ilyachch ({{ cookiecutter.repository }})"
 }

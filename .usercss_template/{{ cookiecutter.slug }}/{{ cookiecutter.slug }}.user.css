@@ -2,10 +2,12 @@
 @name         {{ cookiecutter.name }} style
 @namespace    {{ cookiecutter.repository_name }}
 @version      {{ cookiecutter.version }}
-@license      {{ cookiecutter.license }}
-@preprocessor {{ cookiecutter.preprocessor }}
+@description  {{ cookiecutter.description }}
+@author       {{ cookiecutter.author }}
 @homepageURL  {{ cookiecutter.repository }}
 @supportURL   {{ cookiecutter.repository }}/issues
-@updateURL    {{ cookiecutter.repository }}/blob/main/usercss/{{ cookiecutter.name }}/{{ cookiecutter.name }}.user.css
+@updateURL    {{ cookiecutter.update_url }}
+@license      {{ cookiecutter.license }}
+@preprocessor {{ cookiecutter.preprocessor }}
 ==/UserStyle== */
 
