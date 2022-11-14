@@ -1,15 +1,32 @@
 {
     "name": "Custom Script",
     "slug": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
-
+    "_output": "qqq",
     "namespace": "ilyachch/userscripts/user_scripts",
     "version": "0.0.1",
     "description": "Custom Script - {{ cookiecutter.name }}",
     "license": "MIT",
-    "preprocessor": ["default", "uso", "less", "stylus"],
-    "repository_host": "https://github.com",
+    "__repository_host": "https://github.com",
+    "__raw_repository_host": "https://raw.githubusercontent.com",
     "repository_name": "ilyachch/userscripts",
-    "repository": "{{cookiecutter.repository_host}}/{{cookiecutter.repository_name}}",
-    "update_url": "https://raw.githubusercontent.com/{{ cookiecutter.repository_name }}/main/userscripts/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
-    "author": "ilyachch ({{ cookiecutter.repository }})"
+    "__repository": "{{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}}",
+    "update_url": "{{cookiecutter.__raw_repository_host}}/{{ cookiecutter.repository_name }}/main/userscripts/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.js",
+    "author": "ilyachch ({{ cookiecutter.__repository }})",
+
+    "noframes": false,
+    "unwrap": false,
+    "antifeatures": [
+        {
+            "name": "ads",
+            "description": "Ads can be shown"
+        },
+        {
+            "name": "tracking",
+            "description": "Can track you"
+        },
+        {
+            "name": "miner",
+            "description": "Can use your computer's resources to mine a crypto currency"
+        }
+    ]
 }
