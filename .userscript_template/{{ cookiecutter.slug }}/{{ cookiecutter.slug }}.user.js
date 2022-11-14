@@ -39,7 +39,7 @@
 {% endif -%}
 // ==/UserScript==
 
-{% if cookiecutter.separate_css == "True" %}
+{% if cookiecutter.separate_css == "True" -%}
 // https://github.com/greasemonkey/gm4-polyfill
 if (typeof GM_addStyle === "undefined") {
     GM_addStyle = (aCss) => {
@@ -57,7 +57,9 @@ if (typeof GM_addStyle === "undefined") {
 }
 
 if (typeof GM_getResourceText === "undefined") {
-    fetch("{{ cookiecutter.__css_url}}").then((response) => response.text().then((styles) => GM_addStyle(styles)));
+    fetch(
+        "{{ cookiecutter.__css_url}}"
+    ).then((response) => response.text().then((styles) => GM_addStyle(styles)));
 } else {
     const styles = GM_getResourceText("styles");
     GM_addStyle(styles);
