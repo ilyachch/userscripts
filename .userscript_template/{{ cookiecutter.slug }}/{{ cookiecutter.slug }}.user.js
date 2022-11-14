@@ -6,28 +6,65 @@
 // @author       {{ cookiecutter.author }}
 // @homepageURL  {{ cookiecutter.__repository }}
 // @supportURL   {{ cookiecutter.__repository }}/issues
-// @updateURL    {{ cookiecutter.update_url }}
-// @downloadURL  {{ cookiecutter.update_url }}
+// @updateURL    {{ cookiecutter.__update_url }}
+// @downloadURL  {{ cookiecutter.__update_url }}
 // @license      {{ cookiecutter.license }}
 
-{%- if cookiecutter.noframes -%}
-// @noframes -
-{% endif %}
+// @run-at       {{ cookiecutter.run_at }}
+// @match        {{ cookiecutter.match }}
+{% if cookiecutter.icon -%}
+// @icon         {{ cookiecutter.icon }}
+{% endif -%}
 
-{%- if cookiecutter.unwrap -%}
+{% if cookiecutter.noframes == "True" -%}
+// @noframes
+{% endif -%}
+{% if cookiecutter.unwrap == "True" -%}
 // @unwrap
-{% endif %}
-// @run-at       document-start, document-end, document-idle
+{% endif -%}
+{% if cookiecutter.antifeature_ads == "True" -%}
+// @antifeature  ads Ads can be shown
+{% endif -%}
+{% if cookiecutter.antifeature_tracking == "True" -%}
+// @antifeature  tracking Can track you
+{% endif -%}
+{% if cookiecutter.antifeature_miner == "True" -%}
+// @antifeature  miner Can use your computer's resources to mine a crypto currency
+{% endif -%}
+
+{% if cookiecutter.separate_css == "True" %}
+// @resource     styles {{ cookiecutter.__css_url}}
 // @grant        GM_addStyle
-// @connect      *
-// @require      *
-// @resource     *
-// @icon         *
-{{ cookiecutter.antifeatures|jsonify|indent(0) }}
+// @grant        GM_getResourceText
+{% endif -%}
 // ==/UserScript==
 
-(function() {
-    'use strict';
+{% if cookiecutter.separate_css == "True" %}
+// https://github.com/greasemonkey/gm4-polyfill
+if (typeof GM_addStyle === "undefined") {
+    GM_addStyle = (aCss) => {
+        "use strict";
+        let head = document.getElementsByTagName("head")[0];
+        if (head) {
+            let style = document.createElement("style");
+            style.setAttribute("type", "text/css");
+            style.textContent = aCss;
+            head.appendChild(style);
+            return style;
+        }
+        return null;
+    };
+}
+
+if (typeof GM_getResourceText === "undefined") {
+    fetch("{{ cookiecutter.__css_url}}").then((response) => response.text().then((styles) => GM_addStyle(styles)));
+} else {
+    const styles = GM_getResourceText("styles");
+    GM_addStyle(styles);
+}
+{% endif -%}
+(function () {
+    "use strict";
 
     // Your code here...
 })();

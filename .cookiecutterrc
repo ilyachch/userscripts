@@ -1,0 +1,3 @@
+default_context:
+  run_at: 'document-end'
+

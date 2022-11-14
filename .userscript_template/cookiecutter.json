@@ -1,32 +1,34 @@
 {
     "name": "Custom Script",
     "slug": "{{ cookiecutter.name.lower().replace(' ', '_').replace('-', '_') }}",
-    "_output": "qqq",
     "namespace": "ilyachch/userscripts/user_scripts",
     "version": "0.0.1",
     "description": "Custom Script - {{ cookiecutter.name }}",
     "license": "MIT",
     "__repository_host": "https://github.com",
-    "__raw_repository_host": "https://raw.githubusercontent.com",
     "repository_name": "ilyachch/userscripts",
-    "__repository": "{{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}}",
-    "update_url": "{{cookiecutter.__raw_repository_host}}/{{ cookiecutter.repository_name }}/main/userscripts/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.js",
-    "author": "ilyachch ({{ cookiecutter.__repository }})",
+    "__repository": "{{ cookiecutter.__repository_host }}/{{ cookiecutter.repository_name }}",
+    "__raw_repository_host": "https://raw.githubusercontent.com",
+    "__raw_repository": "{{cookiecutter.__raw_repository_host}}/{{ cookiecutter.repository_name }}/main/userscripts",
+    "__update_url": "{{ cookiecutter.__raw_repository}}/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.js",
+    "__css_url": "{{ cookiecutter.__raw_repository}}/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
+    "author": "ilyachch ({{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}})",
+
+    "run_at": [
+        "document-start",
+        "document-body",
+        "document-end",
+        "document-idle",
+        "context-menu"
+    ],
+    "match": "*://*/*",
+    "icon": "",
 
     "noframes": false,
     "unwrap": false,
-    "antifeatures": [
-        {
-            "name": "ads",
-            "description": "Ads can be shown"
-        },
-        {
-            "name": "tracking",
-            "description": "Can track you"
-        },
-        {
-            "name": "miner",
-            "description": "Can use your computer's resources to mine a crypto currency"
-        }
-    ]
+    "antifeature_ads": false,
+    "antifeature_tracking": false,
+    "antifeature_miner": false,
+
+    "separate_css": false
 }

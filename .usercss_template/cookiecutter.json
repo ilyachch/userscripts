@@ -9,7 +9,7 @@
     "__repository_host": "https://github.com",
     "__raw_repository_host": "https://raw.githubusercontent.com",
     "repository_name": "ilyachch/userscripts",
-    "repository": "{{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}}",
+    "__repository": "{{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}}",
     "update_url": "{{ cookiecutter.__raw_repository_host }}/{{ cookiecutter.repository_name }}/main/usercss/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
-    "author": "ilyachch ({{ cookiecutter.repository }})"
+    "author": "ilyachch ({{ cookiecutter.__repository }})"
 }
