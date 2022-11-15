@@ -1,0 +1,28 @@
+/* ==UserStyle==
+@name         kinopoisk style
+@namespace    ilyachch/userscripts
+@version      0.0.1
+@description  Custom CSS - kinopoisk
+@author       ilyachch (https://github.com/ilyachch/userscripts)
+@homepageURL  https://github.com/ilyachch/userscripts
+@supportURL   https://github.com/ilyachch/userscripts/issues
+@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/kinopoisk/kinopoisk.user.css
+@license      MIT
+@preprocessor default
+==/UserStyle== */
+
+header > div > a {
+    display: none;
+}
+
+div[class*=" styles_rootRendered__"] {
+    display: none;
+}
+
+div[class*="styles_adBlockWarningRoot__"] {
+    display: none;
+}
+
+#partial_component__header-topline{
+    display: none;
+}

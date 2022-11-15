@@ -1,0 +1,28 @@
+/* ==UserStyle==
+@name         feedly style
+@namespace    ilyachch/userscripts
+@version      0.0.1
+@description  Custom CSS - feedly
+@author       ilyachch (https://github.com/ilyachch/userscripts)
+@homepageURL  https://github.com/ilyachch/userscripts
+@supportURL   https://github.com/ilyachch/userscripts/issues
+@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css
+@license      MIT
+@preprocessor default
+==/UserStyle== */
+
+.widget-related-feeds{
+    display: none;
+}
+
+.StreamPage > .row > .col-xl-3.col-xl-3-xlarge-only{
+    display: none;
+}
+
+.StreamPage > .row > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only{
+    width: 100%;
+}
+
+.StreamPage > .row > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only article{
+    max-width: 100%;
+}

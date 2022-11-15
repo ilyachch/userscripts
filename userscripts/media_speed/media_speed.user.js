@@ -17,7 +17,7 @@
 const STYLE = `
 .speed-control {
     position: absolute;
-    bottom: 5rem;
+    top: 5rem;
     left: 2.5rem;
     border-radius: 0.5rem;
     z-index: 9999;
