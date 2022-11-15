@@ -11,5 +11,6 @@
     "repository_name": "ilyachch/userscripts",
     "__repository": "{{cookiecutter.__repository_host}}/{{cookiecutter.repository_name}}",
     "update_url": "{{ cookiecutter.__raw_repository_host }}/{{ cookiecutter.repository_name }}/main/usercss/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.css",
-    "author": "ilyachch ({{ cookiecutter.__repository }})"
+    "author": "ilyachch ({{ cookiecutter.__repository }})",
+    "filter_by": ["url", "url-prefix", "domain", "regexp"]
 }

@@ -11,18 +11,20 @@
 @preprocessor default
 ==/UserStyle== */
 
-.bs4-container{
+@-moz-document domain("rollbar.com") {
+  .bs4-container {
     max-width: inherit;
-}
+  }
 
-.alert.alert-block{
+  .alert.alert-block {
     margin: 1rem 2rem !important;
-}
+  }
 
-.site-notification {
+  .site-notification {
     margin: 1rem 2rem !important;
-}
+  }
 
-.ellipsis{
+  .ellipsis {
     max-width: none !important;
+  }
 }

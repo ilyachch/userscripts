@@ -11,6 +11,8 @@
 @preprocessor default
 ==/UserStyle== */
 
-.open .merge-status-list{
+@-moz-document domain("github.com") {
+  .open .merge-status-list {
     max-height: 100% !important;
+  }
 }

@@ -11,9 +11,11 @@
 @preprocessor default
 ==/UserStyle== */
 
-#app .two {
+@-moz-document domain("whatsapp.com") {
+  #app .two {
     margin: 0;
     top: 0px;
     width: 100%;
     height: 100%;
+  }
 }

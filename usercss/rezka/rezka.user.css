@@ -11,48 +11,50 @@
 @preprocessor default
 ==/UserStyle== */
 
-.b-content__main ~ div {
+@-moz-document domain("rezka.ag") domain("rezka.pw") domain("hdrezka.co") domain("hdrezka.me") {
+  .b-content__main ~ div {
     display: none;
-}
+  }
 
-.b-content__main {
+  .b-content__main {
     padding-right: 0;
-}
+  }
 
-.b-content__columns {
+  .b-content__columns {
     padding-right: 0;
-}
+  }
 
-body.active-brand.pp {
+  body.active-brand.pp {
     padding-top: 0 !important;
-}
+  }
 
-.b-player__container_cdn {
+  .b-player__container_cdn {
     height: 700px !important;
     margin: 0 auto;
     width: 100% !important;
-}
+  }
 
-.b-player__holder_cdn {
+  .b-player__holder_cdn {
     height: 100% !important;
     margin: 0 auto;
     width: 100% !important;
-}
+  }
 
-.b-sidelist__holder .b-sidelist {
-    width: 100% !important
-}
+  .b-sidelist__holder .b-sidelist {
+    width: 100% !important;
+  }
 
-#addcomment-title,
-#comments-form,
-#hd-comments-navigation,
-#hd-comments-list {
+  #addcomment-title,
+  #comments-form,
+  #hd-comments-navigation,
+  #hd-comments-list {
     display: none;
-}
+  }
 
-.b-content__main > div {
+  .b-content__main > div {
     display: none;
-}
-.b-content__main > div[class^='b-'] {
+  }
+  .b-content__main > div[class^="b-"] {
     display: block;
+  }
 }

@@ -11,18 +11,20 @@
 @preprocessor default
 ==/UserStyle== */
 
-header > div > a {
+@-moz-document domain("kinopoisk.ru") {
+  header > div > a {
     display: none;
-}
+  }
 
-div[class*=" styles_rootRendered__"] {
+  div[class*=" styles_rootRendered__"] {
     display: none;
-}
+  }
 
-div[class*="styles_adBlockWarningRoot__"] {
+  div[class*="styles_adBlockWarningRoot__"] {
     display: none;
-}
+  }
 
-#partial_component__header-topline{
+  #partial_component__header-topline {
     display: none;
+  }
 }

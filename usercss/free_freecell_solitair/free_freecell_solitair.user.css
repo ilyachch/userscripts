@@ -1,20 +1,22 @@
 /* ==UserStyle==
-@name         free-freecekk-solitair style
+@name         free-freecell-solitair style
 @namespace    ilyachch/userscripts
 @version      0.0.1
-@description  Custom CSS - free-freecekk-solitair
+@description  Custom CSS - free-freecell-solitair
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
 @supportURL   https://github.com/ilyachch/userscripts/issues
-@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecekk_solitair/free_freecekk_solitair.user.css
+@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecell_solitair/free_freecell_solitair.user.css
 @license      MIT
 @preprocessor default
 ==/UserStyle== */
 
-#game-ui{
+@-moz-document domain("free-freecell-solitaire.com") {
+  #game-ui {
     width: 100%;
     left: 0;
-}
-#adarea{
+  }
+  #adarea {
     display: None;
+  }
 }

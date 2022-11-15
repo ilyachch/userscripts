@@ -11,10 +11,12 @@
 @preprocessor default
 ==/UserStyle== */
 
-body {
+@-moz-document domain("acomics.ru") {
+  body {
     background: black !important;
-}
+  }
 
-#background {
+  #background {
     background-image: none !important;
+  }
 }

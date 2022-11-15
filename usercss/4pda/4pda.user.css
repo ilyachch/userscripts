@@ -11,6 +11,8 @@
 @preprocessor default
 ==/UserStyle== */
 
-.advanced-area {
+@-moz-document domain("4pda.to") {
+  .advanced-area {
     display: none !important;
+  }
 }

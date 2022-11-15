@@ -11,18 +11,25 @@
 @preprocessor default
 ==/UserStyle== */
 
-.widget-related-feeds{
+@-moz-document domain("feedly.com") {
+  .widget-related-feeds {
     display: none;
-}
+  }
 
-.StreamPage > .row > .col-xl-3.col-xl-3-xlarge-only{
+  .StreamPage > .row > .col-xl-3.col-xl-3-xlarge-only {
     display: none;
-}
+  }
 
-.StreamPage > .row > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only{
+  .StreamPage
+    > .row
+    > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only {
     width: 100%;
-}
+  }
 
-.StreamPage > .row > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only article{
+  .StreamPage
+    > .row
+    > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only
+    article {
     max-width: 100%;
+  }
 }

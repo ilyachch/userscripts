@@ -11,18 +11,20 @@
 @preprocessor default
 ==/UserStyle== */
 
-#adTemp {
+@-moz-document domain("free-play-sudoku.com") {
+  #adTemp {
     display: none !important;
-}
+  }
 
-#content {
+  #content {
     left: 0;
-}
+  }
 
-#sudokuKeyboardAdditional {
+  #sudokuKeyboardAdditional {
     display: none !important;
-}
+  }
 
-#sidebarRight {
+  #sidebarRight {
     display: none !important;
+  }
 }

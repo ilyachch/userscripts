@@ -11,19 +11,21 @@
 @preprocessor default
 ==/UserStyle== */
 
-ytd-playlist-panel-renderer {
+@-moz-document domain("youtube.com") {
+  ytd-playlist-panel-renderer {
     --ytd-watch-flexy-panel-max-height: 100vh;
     --ytd-watch-flexy-chat-max-height: 100vh;
+  }
+
+  /* div#related ytd-item-section-renderer{ */
+  /*     max-height: 500px; */
+  /* } */
+
+  /* ytd-comments { */
+  /*     display: none; */
+  /* } */
+
+  /* .ytd-guide-section-renderer{ */
+  /*     display: none; */
+  /* } */
 }
-
-/* div#related ytd-item-section-renderer{ */
-/*     max-height: 500px; */
-/* } */
-
-/* ytd-comments { */
-/*     display: none; */
-/* } */
-
-/* .ytd-guide-section-renderer{ */
-/*     display: none; */
-/* } */

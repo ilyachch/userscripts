@@ -11,7 +11,9 @@
 @preprocessor default
 ==/UserStyle== */
 
-iframe.radio{
+@-moz-document domain("dcealopez.es") {
+  iframe.radio {
     width: 900px;
     height: 507px;
+  }
 }
