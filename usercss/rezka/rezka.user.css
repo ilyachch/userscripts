@@ -11,7 +11,7 @@
 @preprocessor default
 ==/UserStyle== */
 
-@-moz-document domain("rezka.ag") domain("rezka.pw") domain("hdrezka.co") domain("hdrezka.me") {
+@-moz-document domain("rezka.ag"), domain("rezka.pw"), domain("hdrezka.co"), domain("hdrezka.me") {
   .b-content__main ~ div {
     display: none;
   }
