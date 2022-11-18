@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.0.1
+// @version      0.0.2
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -93,6 +93,9 @@ function patch() {
         media_element.addEventListener("play", function () {
             media_element.playbackRate = get_speed();
         });
+        media_element.addEventListener("playing", function () {
+            media_element.playbackRate = get_speed();
+        })
     }
 }
 
