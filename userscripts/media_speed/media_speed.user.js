@@ -35,29 +35,27 @@ const STYLE = `
     opacity: 0.1;
     transition: 1s;
 }
-
 .user_media_speed_control:fullscreen{
     opacity: 0;
 }
-
 .user_media_speed_control:hover{
     width: 36rem;
     opacity: 1;
 }
-
-.user_media_speed_control_title .user_media_speed_control_option{
-    font-weight: 600;
+.user_media_speed_control_title, .user_media_speed_control_option{
+    font-weight: 400;
     margin: 1rem;
     width: 2rem;
     height: 2rem;
     text-align: center;
     min-width: 2rem;
 }
-
+.user_media_speed_control_title{
+    font-weight: 600;
+}
 .user_media_speed_control_option{
     cursor: pointer;
 }
-
 .user_media_speed_control_option.selected{
     font-weight: 600;
 }
