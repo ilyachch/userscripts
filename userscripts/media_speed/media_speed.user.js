@@ -14,131 +14,146 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 
+const localStorageKey = "user_media_speed";
+
 const STYLE = `
-.speed-control {
-    position: absolute;
-    top: 5rem;
+.user_media_speed_control{
+    position: fixed;
+    font-size: 1.5rem;
+    bottom: 5rem;
     left: 2.5rem;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     z-index: 9999;
     background-color: #2e2f34;
     color: #ffffff;
-    padding: 0.75rem;
-    opacity: 0;
-    transition: opacity 1s;
     user-select: none;
-    font: 600 12px / 14px "Segoe UI", BlinkMacSystemFont, Arial, sans-serif
+    width: 4rem;
+    height: 4rem;
+    overflow: hidden;
+    display: flex;
+    opacity: 0.1;
+    transition: 1s;
 }
-.speed-control.visible {
+
+.user_media_speed_control:fullscreen{
+    opacity: 0;
+}
+
+.user_media_speed_control:hover{
+    width: 36rem;
     opacity: 1;
 }
-.speed-control-option{
+
+.user_media_speed_control_title{
+    font-weight: 600;
+    margin: 1rem;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
     cursor: pointer;
-    font-weight: 400;
-    margin-left: 1rem;
+    min-width: 2rem;
 }
-.speed-control-option__selected{
+
+.user_media_speed_control_option{
+    font-weight: 400;
+    margin: 1rem;
+    display: inline-block;
+    height: 2rem;
+    text-align: center;
+    cursor: pointer;
+    min-width: 2rem;
+}
+
+.user_media_speed_control_option.selected{
     font-weight: 600;
 }
 `;
 
+const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
+
 (function () {
     "use strict";
     console.log("Media Speed script started");
-    GM_addStyle(STYLE);
-    patch();
-    document.addEventListener("DOMSubtreeModified", patch);
-    let hide_timeout = setTimeout(function () {
-        for (let speed_control of document.querySelectorAll(
-            ".speed-control.visible"
-        )) {
-            speed_control.classList.remove("visible");
-        }
-    }, 2000);
 
-    document.addEventListener("mousemove", function (e) {
-        let speed_controls = document.querySelectorAll(
-            ".speed-control:not(.visible)"
-        );
-        for (let speed_control of speed_controls) {
-            if (!speed_control.classList.contains("visible")) {
-                speed_control.classList.add("visible");
-            }
-        }
-        clearTimeout(hide_timeout);
-        hide_timeout = setTimeout(function () {
-            for (let speed_control of document.querySelectorAll(
-                ".speed-control.visible"
-            )) {
-                speed_control.classList.remove("visible");
-            }
-        }, 2000);
+    let cutternPlayingElement = null;
+
+    document.addEventListener(
+        "play",
+        function (event) {
+            cutternPlayingElement = event.target;
+            set_playback_speed(event.target, get_playback_speed());
+        },
+        true
+    );
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        GM_addStyle(STYLE);
+        create_speed_control_element();
     });
+
+    document.addEventListener(
+        "MediaPlaybackSpeedChanged",
+        function (event) {
+            let speed = event.detail.speed;
+            set_playback_speed(cutternPlayingElement, speed);
+            document
+                .querySelectorAll(".user_media_speed_control_option")
+                .forEach(function (element) {
+                    element.classList.remove("selected");
+                });
+            event.detail.source.classList.add("selected");
+            document.querySelector(
+                ".user_media_speed_control_title"
+            ).innerText = speed;
+        },
+        true
+    );
 })();
 
-function patch() {
-    let media_elements = document.querySelectorAll("video, audio");
-    let not_patched_media_elements = [];
-    for (let media_element of media_elements) {
-        if (
-            media_element.parentElement.querySelector(".speed-control") == null
-        ) {
-            not_patched_media_elements.push(media_element);
-        }
-    }
-
-    for (let media_element of not_patched_media_elements) {
-        let speed_control = create_speed_control(media_element);
-        media_element.parentElement.appendChild(speed_control);
-        media_element.addEventListener("play", function () {
-            media_element.playbackRate = get_speed();
-        });
-        media_element.addEventListener("playing", function () {
-            media_element.playbackRate = get_speed();
-        })
-    }
+function get_playback_speed() {
+    return localStorage.getItem(localStorageKey) || 1;
 }
 
-function create_speed_control(media_element) {
+function set_playback_speed(element, speed) {
+    element.playbackRate = speed;
+    save_playback_speed(speed);
+}
+
+function save_playback_speed(speed) {
+    localStorage.setItem(localStorageKey, speed);
+}
+
+function create_speed_control_element() {
+    let currentSpeed = get_playback_speed();
     let speed_control = document.createElement("div");
-    speed_control.classList.add("speed-control");
-    let speed_control_label = document.createElement("span");
-    speed_control_label.innerText = "Speed:";
-    speed_control.appendChild(speed_control_label);
+    speed_control.classList.add("user_media_speed_control");
 
-    let speed = get_speed();
+    let speed_control_title = document.createElement("div");
+    speed_control_title.classList.add("user_media_speed_control_title");
+    speed_control_title.innerText = currentSpeed;
 
-    let container = document.createElement("span");
-    let choices = [1, 1.5, 2, 2.5, 3, 4, 5];
-    for (let choice of choices) {
-        let option = document.createElement("span");
-        option.classList.add("speed-control-option");
-        if (speed == choice) {
-            option.classList.add("speed-control-option__selected");
+    speed_control.appendChild(speed_control_title);
+
+    for (let speed of SPEED_OPTIONS) {
+        let speed_option = document.createElement("div");
+        speed_option.classList.add("user_media_speed_control_option");
+        speed_option.setAttribute("data-speed", speed);
+        if (speed == currentSpeed) {
+            speed_option.classList.add("selected");
         }
-        option.innerText = choice;
-        container.appendChild(option);
-        option.addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            media_element.playbackRate = choice;
-            for (let option of container.querySelectorAll(
-                ".speed-control-option"
-            )) {
-                option.classList.remove("speed-control-option__selected");
-            }
-            option.classList.add("speed-control-option__selected");
-            save_speed(choice);
+        speed_option.innerText = speed;
+        speed_option.addEventListener("click", function () {
+            speed_option.dispatchEvent(
+                new CustomEvent("MediaPlaybackSpeedChanged", {
+                    detail: {
+                        speed: speed,
+                        source: speed_option,
+                    },
+                })
+            );
         });
+        speed_control.appendChild(speed_option);
     }
-    speed_control.appendChild(container);
-    return speed_control;
-}
 
-function save_speed(speed) {
-    localStorage.setItem("user_media_speed", parseFloat(speed));
-}
-
-function get_speed() {
-    return parseFloat(localStorage.getItem("user_media_speed") || 1);
+    document.body.appendChild(speed_control);
 }
