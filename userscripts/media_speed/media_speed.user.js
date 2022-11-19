@@ -5,6 +5,7 @@
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
+// @source       https://github.com/ilyachch/userscripts/blob/main/userscripts/media_speed/media_speed.user.js
 // @supportURL   https://github.com/ilyachch/userscripts/issues
 // @updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js
 // @downloadURL  https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js

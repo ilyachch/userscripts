@@ -8,6 +8,7 @@
     "__repository_host": "https://github.com",
     "repository_name": "ilyachch/userscripts",
     "__repository": "{{ cookiecutter.__repository_host }}/{{ cookiecutter.repository_name }}",
+    "__sources": "{{ cookiecutter.__repository}}/blob/main/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.js",
     "__raw_repository_host": "https://raw.githubusercontent.com",
     "__raw_repository": "{{cookiecutter.__raw_repository_host}}/{{ cookiecutter.repository_name }}/main/userscripts",
     "__update_url": "{{ cookiecutter.__raw_repository}}/{{ cookiecutter.slug }}/{{ cookiecutter.slug }}.user.js",

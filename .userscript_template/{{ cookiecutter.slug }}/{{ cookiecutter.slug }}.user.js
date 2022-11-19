@@ -5,6 +5,7 @@
 // @description  {{ cookiecutter.description }}
 // @author       {{ cookiecutter.author }}
 // @homepageURL  {{ cookiecutter.__repository }}
+// @source       {{ cookiecutter.__sources }}
 // @supportURL   {{ cookiecutter.__repository }}/issues
 // @updateURL    {{ cookiecutter.__update_url }}
 // @downloadURL  {{ cookiecutter.__update_url }}
