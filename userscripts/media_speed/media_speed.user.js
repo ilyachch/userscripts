@@ -75,12 +75,12 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
     "use strict";
     console.log("Media Speed script started");
 
-    let cutternPlayingElement = null;
+    let currentPlayingElement = null;
 
     document.addEventListener(
         "play",
         function (event) {
-            cutternPlayingElement = event.target;
+            currentPlayingElement = event.target;
             set_playback_speed(event.target, get_playback_speed());
         },
         true
@@ -95,7 +95,11 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         "MediaPlaybackSpeedChanged",
         function (event) {
             let speed = event.detail.speed;
-            set_playback_speed(cutternPlayingElement, speed);
+            if (currentPlayingElement) {
+                set_playback_speed(currentPlayingElement, speed);
+            } else {
+                save_playback_speed(speed);
+            }
             document
                 .querySelectorAll(".user_media_speed_control_option")
                 .forEach(function (element) {
