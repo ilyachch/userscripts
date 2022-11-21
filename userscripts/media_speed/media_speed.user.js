@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.0.2
+// @version      0.0.3
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -10,7 +10,7 @@
 // @updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js
 // @downloadURL  https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js
 // @license      MIT
-// @run-at       document-end
+// @run-at       document-start
 // @match        *://*/*
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -80,7 +80,9 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
 
     document.addEventListener("DOMContentLoaded", function (event) {
         GM_addStyle(STYLE);
-        create_speed_control_element();
+        if (document.querySelectorAll("video, audio").length > 0) {
+            create_speed_control_element();
+        }
     });
 
     document.addEventListener(
@@ -120,6 +122,9 @@ function save_playback_speed(speed) {
 }
 
 function create_speed_control_element() {
+    if (document.querySelectorAll(".user_media_speed_control").length > 0) {
+        return;
+    }
     let currentSpeed = get_playback_speed();
     let speed_control = document.createElement("div");
     speed_control.classList.add("user_media_speed_control");

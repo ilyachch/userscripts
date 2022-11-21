@@ -5,6 +5,7 @@
 // @description  Remake tabs on pikabu
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
+// @source       https://github.com/ilyachch/userscripts/blob/main/userscripts/pikabu_tabs/pikabu_tabs.user.js
 // @supportURL   https://github.com/ilyachch/userscripts/issues
 // @updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js
 // @downloadURL  https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js
