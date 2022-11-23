@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.0.4
+// @version      0.0.5
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -73,7 +73,7 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         "play",
         function (event) {
             currentPlayingElement = event.target;
-            set_playback_speed(event.target, get_playback_speed());
+            set_playback_speed(get_playback_speed(), currentPlayingElement);
             create_speed_control_element();
         },
         true
@@ -90,31 +90,39 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         "MediaPlaybackSpeedChanged",
         function (event) {
             let speed = event.detail.speed;
-            if (currentPlayingElement) {
-                set_playback_speed(currentPlayingElement, speed);
-            } else {
-                save_playback_speed(speed);
-            }
-            document
-                .querySelectorAll(".user_media_speed_control_option")
-                .forEach(function (element) {
-                    element.classList.remove("selected");
-                });
-            event.detail.source.classList.add("selected");
-            document.querySelector(
-                ".user_media_speed_control_title"
-            ).innerText = speed;
+            set_playback_speed(speed);
+            set_selected_speed_option_active(speed);
         },
         true
     );
 })();
 
+function set_selected_speed_option_active(speed) {
+    document
+        .querySelectorAll(".user_media_speed_control_option")
+        .forEach(function (element) {
+            element.classList.remove("selected");
+        });
+    document
+        .querySelector(
+            `.user_media_speed_control_option[data-speed="${speed}"]`
+        )
+        .classList.add("selected");
+    document.querySelector(".user_media_speed_control_title").innerText = speed;
+}
+
 function get_playback_speed() {
     return localStorage.getItem(localStorageKey) || 1;
 }
 
-function set_playback_speed(element, speed) {
-    element.playbackRate = speed;
+function set_playback_speed(speed, element) {
+    if (!element) {
+        document.querySelectorAll("video, audio").forEach(function (element) {
+            element.playbackRate = speed;
+        });
+    } else {
+        element.playbackRate = speed;
+    }
     save_playback_speed(speed);
 }
 
