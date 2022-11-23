@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.0.1
+// @version      0.0.2
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -87,6 +87,7 @@ function ExposeRating() {
 
     function set_title(rating) {
         let title_el = document.querySelector("head title");
-        title_el.innerText = `(${rating.sign}${rating.score}) ${title_el.innerText}`;
+        let sign = rating.sign ? rating.sign : "";
+        title_el.innerText = `(${sign}${rating.score}) ${title_el.innerText}`;
     }
 }
