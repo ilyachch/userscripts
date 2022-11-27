@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.0.2
+// @version      0.0.3
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -45,7 +45,7 @@ function ExposeRating() {
 
     function get_rating() {
         let rating_el = document.querySelector(
-            'span[data-test-id="votes-score-counter"]'
+            'span.tm-votes-lever__score-counter'
         );
         if (rating_el.innerText.startsWith("+")) {
             return new Rating(
