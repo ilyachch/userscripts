@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.0.3
+// @version      0.0.4
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -45,8 +45,8 @@ function ExposeRating() {
 
     function get_rating() {
         let rating_el = document.querySelector(
-            'span.tm-votes-lever__score-counter'
-        );
+            '.tm-article-rating span.tm-votes-lever__score-counter'
+        ) || document.querySelector('.tm-article-rating span.tm-votes-meter__value');
         if (rating_el.innerText.startsWith("+")) {
             return new Rating(
                 rating_el.innerText.slice(1),
