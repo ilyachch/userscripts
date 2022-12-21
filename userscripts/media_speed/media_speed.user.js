@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.0.5
+// @version      0.0.6
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -73,8 +73,10 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         "play",
         function (event) {
             currentPlayingElement = event.target;
-            set_playback_speed(get_playback_speed(), currentPlayingElement);
+            let speed = get_playback_speed();
+            set_playback_speed(speed, currentPlayingElement);
             create_speed_control_element();
+            set_selected_speed_option_active(speed);
         },
         true
     );
