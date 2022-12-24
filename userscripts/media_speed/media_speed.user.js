@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.0.6
+// @version      0.1.0
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -18,43 +18,52 @@
 const localStorageKey = "user_media_speed";
 
 const STYLE = `
+:root{
+    --font-size: 20px;
+    --size: 40px;
+    --border-radius: 30px;
+    --placement: 25px;
+    --margin: 10px;
+}
+
 .user_media_speed_control{
+    font-size: var(--font-size);
+    font-family: monospace;
+    line-height: var(--size);
+
+    display: flex;
     position: fixed;
-    font-size: 1.5rem;
-    bottom: 5rem;
-    left: 2.5rem;
-    border-radius: 2rem;
+    bottom: var(--placement);
+    left: var(--placement);
     z-index: 9999;
+
+    border-radius: var(--border-radius);
     background-color: #2e2f34;
     color: #ffffff;
     user-select: none;
-    width: 4rem;
-    height: 4rem;
     overflow: hidden;
-    display: flex;
     opacity: 0.1;
-    transition: 1s;
-}
-.user_media_speed_control:fullscreen{
-    opacity: 0;
 }
 .user_media_speed_control:hover{
-    width: 36rem;
-    opacity: 1;
+    opacity: 0.7;
 }
 .user_media_speed_control_title, .user_media_speed_control_option{
-    font-weight: 400;
-    margin: 1rem;
-    width: 2rem;
-    height: 2rem;
+    margin: var(--margin);
+    width: var(--size);
+    height: var(--size);
     text-align: center;
-    min-width: 2rem;
 }
+
 .user_media_speed_control_title{
     font-weight: 600;
 }
 .user_media_speed_control_option{
+    font-weight: 400;
     cursor: pointer;
+    display: none;
+}
+.user_media_speed_control:hover .user_media_speed_control_option{
+    display: block;
 }
 .user_media_speed_control_option.selected{
     font-weight: 600;
@@ -65,8 +74,6 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
 
 (function () {
     "use strict";
-    console.log("Media Speed script started");
-
     let currentPlayingElement = null;
 
     document.addEventListener(
