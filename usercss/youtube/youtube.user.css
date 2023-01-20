@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         youtube style
 @namespace    ilyachch/userscripts
-@version      0.0.1
+@version      0.1.0
 @description  Custom CSS - youtube
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -17,15 +17,19 @@
     --ytd-watch-flexy-chat-max-height: 100vh;
   }
 
-  /* div#related ytd-item-section-renderer{ */
-  /*     max-height: 500px; */
-  /* } */
+  ytd-grid-video-renderer:has([aria-label="Shorts"]) {
+    display: none !important;
+  }
 
-  /* ytd-comments { */
-  /*     display: none; */
-  /* } */
+  ytd-guide-entry-renderer:has([title="Shorts"]), ytd-guide-entry-renderer:has([title="Originals"]), ytd-guide-entry-renderer:has([title="YouTube Music"]) {
+    display: none !important;
+  }
 
-  /* .ytd-guide-section-renderer{ */
-  /*     display: none; */
-  /* } */
+  ytd-guide-entry-renderer:has([href^='href="/feed/trending"']){
+    display: none !important;
+  }
+
+  ytd-rich-section-renderer:has([is-shorts]){
+    display: none !important;
+  }
 }
