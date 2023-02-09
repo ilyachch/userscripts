@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         youtube style
 @namespace    ilyachch/userscripts
-@version      0.1.0
+@version      0.1.1
 @description  Custom CSS - youtube
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -17,7 +17,7 @@
     --ytd-watch-flexy-chat-max-height: 100vh;
   }
 
-  ytd-grid-video-renderer:has([aria-label="Shorts"]) {
+  ytd-grid-video-renderer:has([aria-label="Shorts"]), ytd-grid-video-renderer:has(.badge-style-type-live-now-alternate) {
     display: none !important;
   }
 
@@ -30,6 +30,10 @@
   }
 
   ytd-rich-section-renderer:has([is-shorts]){
+    display: none !important;
+  }
+
+  ytd-rich-item-renderer:has(.badge-style-type-live-now-alternate) {
     display: none !important;
   }
 }
