@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         youtube style
 @namespace    ilyachch/userscripts
-@version      0.1.1
+@version      0.1.2
 @description  Custom CSS - youtube
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -17,23 +17,40 @@
     --ytd-watch-flexy-chat-max-height: 100vh;
   }
 
-  ytd-grid-video-renderer:has([aria-label="Shorts"]), ytd-grid-video-renderer:has(.badge-style-type-live-now-alternate) {
+  ytd-grid-video-renderer:has([aria-label="Shorts"]),
+  ytd-grid-video-renderer:has(.badge-style-type-live-now-alternate) {
     display: none !important;
   }
 
-  ytd-guide-entry-renderer:has([title="Shorts"]), ytd-guide-entry-renderer:has([title="Originals"]), ytd-guide-entry-renderer:has([title="YouTube Music"]) {
+  ytd-guide-entry-renderer:has([title="Shorts"]),
+  ytd-guide-entry-renderer:has([title="Originals"]),
+  ytd-guide-entry-renderer:has([title="YouTube Music"]),
+  ytd-guide-entry-renderer:has([href^='href="/feed/trending"']),
+  ytd-guide-entry-renderer:has([href^="/feed/storefront"]),
+  ytd-guide-downloads-entry-renderer {
     display: none !important;
   }
 
-  ytd-guide-entry-renderer:has([href^='href="/feed/trending"']){
+  ytd-rich-section-renderer:has([is-shorts]) {
     display: none !important;
   }
-
-  ytd-rich-section-renderer:has([is-shorts]){
+  ytd-rich-grid-renderer > div#header {
     display: none !important;
   }
 
   ytd-rich-item-renderer:has(.badge-style-type-live-now-alternate) {
+    display: none !important;
+  }
+
+  ytd-mini-guide-entry-renderer[aria-label="Shorts"],
+  ytd-mini-guide-entry-renderer[aria-label="Originals"],
+  ytd-mini-guide-entry-renderer[aria-label="YouTube Music"] {
+    display: none !important;
+  }
+
+  ytd-guide-section-renderer:has(a[href^="/feed/trending"]),
+  ytd-guide-section-renderer:has(a[href="https://studio.youtube.com/"]),
+  ytd-guide-section-renderer:has(a[href^="/@"]) {
     display: none !important;
   }
 }
