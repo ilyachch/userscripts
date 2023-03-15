@@ -101,45 +101,6 @@ function ExposeRating() {
 }
 
 function makeCommentsSortable() {
-    function createButton() {
-        const sortButton = document.createElement("button");
-        sortButton.textContent = "Sort Comments";
-        sortButton.addEventListener("click", sortCommentsByRating);
-        sortButton.style = `-webkit-text-size-adjust: 100%;
-        --font-size: 20px;
-        --size: 40px;
-        --border-radius: 30px;
-        --placement: 25px;
-        --margin: 10px;
-        --swiper-theme-color: #007aff;
-        --swiper-navigation-size: 44px;
-        --safe-area-inset-top: env(safe-area-inset-top);
-        --main-menu-height: 56px;
-        transition: opacity .2s ease-in-out,color .2s ease-in-out,text-decoration .2s ease-in-out,background-color .2s ease-in-out,-webkit-text-decoration .2s ease-in-out;
-        font-family: inherit;
-        font-size: 100%;
-        line-height: 1.15;
-        margin: 0;
-        overflow: visible;
-        text-transform: none;
-        -webkit-appearance: button;
-        background: transparent;
-        border: 0;
-        color: #929ca5;
-        display: block;
-        float: right;
-        cursor: pointer;
-        height: 24px;
-        box-sizing: initial;
-        padding: 0 10px;
-        quotes: "«" "»";
-        outline: none;`;
-        const header = document.querySelector(
-            ".tm-comments-wrapper__header-aside"
-        );
-        header.appendChild(sortButton);
-    }
-
     function sortCommentsByRating() {
         let container = document.querySelector(".tm-comments__tree");
         sortComments(container);
@@ -194,7 +155,34 @@ function makeCommentsSortable() {
         });
     }
 
-    setTimeout(function () {
-        createButton();
-    }, 1500);
+
+    function patchCommentsHeader() {
+        let commentsHeader = document.querySelector(
+            "div.tm-comments-wrapper__wrapper > header > h2"
+        );
+        commentsHeader.style = `
+            cursor: pointer;
+            color: rgb(102, 154, 179);
+        `;
+        commentsHeader.innerHTML +=
+            ' <span style="font-size: 0.8em; vertical-align: middle;">⇅</span>';
+
+        commentsHeader.addEventListener("click", sortCommentsByRating);
+        commentsHeader.setAttribute("patched", true);
+    }
+
+    patchCommentsHeader();
+
+    const observer = new MutationObserver((mutations, observer) => {
+        let commentsHeader = document.querySelector(
+            "div.tm-comments-wrapper__wrapper > header > h2"
+        );
+        if (commentsHeader && !commentsHeader.hasAttribute("patched")) {
+            patchCommentsHeader();
+        }
+    });
+    observer.observe(document, {
+        subtree: true,
+        attributes: true,
+    });
 }

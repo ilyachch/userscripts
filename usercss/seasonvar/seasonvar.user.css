@@ -1,0 +1,82 @@
+/* ==UserStyle==
+@name         seasonvar style
+@namespace    ilyachch/userscripts
+@version      0.0.1
+@description  Custom CSS - seasonvar
+@author       ilyachch (https://github.com/ilyachch/userscripts)
+@homepageURL  https://github.com/ilyachch/userscripts
+@supportURL   https://github.com/ilyachch/userscripts/issues
+@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/seasonvar/seasonvar.user.css
+@license      MIT
+@preprocessor default
+==/UserStyle== */
+
+@-moz-document domain("seasonvar.ru") {
+    .wrapper {
+        max-width: 1440px;
+        min-width: initial;
+    }
+    .header_icon {
+        display: none;
+    }
+    .report-add {
+        display: none;
+    }
+
+    @media screen and (max-width: 919px) {
+        .wrapper {
+            max-width: 100%;
+            margin: 0;
+        }
+        .header_txt, .pgs-back{
+            display: none;
+        }
+        .header_line {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            background: none;
+            margin: 0;
+            padding: 10px 0;
+            align-items: center;
+        }
+        .headblock-search {
+            width: 290px;
+        }
+        .headblock-search input {
+            max-width: 100%;
+        }
+        .headblock-menu {
+            width: 290px;
+        }
+        .head-btn{
+            padding: 0 19px
+        }
+
+        .pgs-sinfo-imgwrap{
+            float: none;
+            margin: auto;
+        }
+        .pgs-sinfo-info{
+            display: block;
+        }
+        .pgs-sinfo-actor{
+            float: none;
+            max-width: initial;
+            width: auto;
+            position: initial;
+        }
+        .pgs-mark_line{
+            display: block;
+        }
+        .pgs-mark_line-set{
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+
+        }
+        .pgs-mark_line-set span{
+            border-radius: 0;
+        }
+    }
+}
