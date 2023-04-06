@@ -22,7 +22,9 @@
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.type === "childList") {
-                const nextEpisodeLoader = document.querySelector(".b-player__next_episode_loader");
+                const nextEpisodeLoader = document.querySelector(
+                    ".b-player__next_episode_loader"
+                );
                 if (nextEpisodeLoader) {
                     setTimeout(() => {
                         nextEpisodeLoader.click();

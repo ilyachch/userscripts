@@ -105,10 +105,6 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         true
     );
 
-    // on shift + right arrow button click scroll 90 seconds forward
-    // on shift + left arrow button click scroll 90 seconds backward
-    // on ctrl + right arrow button click scroll 30 seconds forward
-    // on ctrl + left arrow button click scroll 30 seconds backward
     document.addEventListener("keydown", function (event) {
         if (currentPlayingElement) {
             if (event.shiftKey && event.code == "ArrowRight") {
@@ -122,7 +118,6 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
             }
         }
     });
-
 })();
 
 function set_selected_speed_option_active(speed) {
