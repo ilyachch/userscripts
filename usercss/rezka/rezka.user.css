@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         rezka style
 @namespace    ilyachch/userscripts
-@version      0.1.0
+@version      0.1.1
 @description  Custom CSS - rezka
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -64,6 +64,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
+  }
+  .b-navigation{
+    flex: 0 0 100%;
   }
   .b-content__inline_sidebar {
     display: none;
