@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.1.0
+// @version      0.1.1
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -104,6 +104,25 @@ const SPEED_OPTIONS = [1, 1.5, 2, 2.5, 3, 4, 5, 10];
         },
         true
     );
+
+    // on shift + right arrow button click scroll 90 seconds forward
+    // on shift + left arrow button click scroll 90 seconds backward
+    // on ctrl + right arrow button click scroll 30 seconds forward
+    // on ctrl + left arrow button click scroll 30 seconds backward
+    document.addEventListener("keydown", function (event) {
+        if (currentPlayingElement) {
+            if (event.shiftKey && event.code == "ArrowRight") {
+                currentPlayingElement.currentTime += 90;
+            } else if (event.shiftKey && event.code == "ArrowLeft") {
+                currentPlayingElement.currentTime -= 90;
+            } else if (event.ctrlKey && event.code == "ArrowRight") {
+                currentPlayingElement.currentTime += 30;
+            } else if (event.ctrlKey && event.code == "ArrowLeft") {
+                currentPlayingElement.currentTime -= 30;
+            }
+        }
+    });
+
 })();
 
 function set_selected_speed_option_active(speed) {

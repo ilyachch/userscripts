@@ -15,6 +15,8 @@
 // @match        https://habr.com/*/blog/*/*
 // @match        https://habr.com/*/news/*/*
 // @match        https://habr.com/**/company/**/**/*
+
+// @icon         https://assets.habr.com/habr-web/img/favicons/favicon-16.png
 // ==/UserScript==
 
 (function () {
