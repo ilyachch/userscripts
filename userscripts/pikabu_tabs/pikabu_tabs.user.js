@@ -12,6 +12,8 @@
 // @license      MIT
 // @run-at       document-end
 // @match        https://pikabu.ru/*
+
+// @icon         https://cs.pikabu.ru/assets/images/apple-touch-icon-76x76.png
 // ==/UserScript==
 
 (function () {

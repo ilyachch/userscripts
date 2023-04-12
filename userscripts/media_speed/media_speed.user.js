@@ -13,6 +13,8 @@
 // @run-at       document-start
 // @match        *://*/*
 // @grant        GM_addStyle
+
+// @icon         https://cdn-icons-png.flaticon.com/512/4340/4340125.png
 // ==/UserScript==
 
 const localStorageKey = "user_media_speed";
