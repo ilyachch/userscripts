@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.1.2
+// @version      0.2.0
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -42,10 +42,10 @@ function ExposeRating() {
     }
 
     let rating = get_rating();
-    setTimeout(function () {
+    setInterval(() => {
         colorize_header(rating);
         set_title(rating);
-    }, 500);
+    }, 1000);
 
     function get_rating() {
         let rating_el =
@@ -90,23 +90,50 @@ function ExposeRating() {
         if (!rating.should_colorize || !title_block) {
             return;
         }
+        if (title_block.getAttribute("patched") == "true") {
+            return;
+        }
         if (!title_block.querySelector(".header_rating")) {
             title_block.style.color = rating.color;
             title_el.innerHTML += `<span style="color: ${rating.color}" class="header_rating"> (${rating.sign}${rating.score})</span>`;
         }
+
+        title_block.setAttribute("patched", "true");
     }
 
     function set_title(rating) {
         let title_el = document.querySelector("head title");
+        if (title_el.getAttribute("patched") == "true") {
+            return;
+        }
         let sign = rating.sign ? rating.sign : "";
         title_el.innerText = `(${sign}${rating.score}) ${title_el.innerText}`;
+        title_el.setAttribute("patched", "true");
     }
 }
 
 function makeCommentsSortable() {
+    function showNotification(text) {
+        let notification = document.createElement("div");
+        notification.style.position = "fixed";
+        notification.style.top = "33%";
+        notification.style.left = "50%";
+        notification.style.transform = "translate(-50%, -50%)";
+        notification.style.padding = "20px";
+        notification.style.backgroundColor = "forestgreen";
+        notification.style.opacity = "0.8";
+        notification.classList.add("notification");
+        notification.innerHTML = text;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }
+
     function sortCommentsByRating() {
         let container = document.querySelector(".tm-comments__tree");
         sortComments(container);
+        showNotification("Comments sorted by rating");
     }
 
     function sortComments(container) {
@@ -163,6 +190,13 @@ function makeCommentsSortable() {
         let commentsHeader = document.querySelector(
             "div.tm-comments-wrapper__wrapper > header > h2"
         );
+        if (!commentsHeader) {
+            return;
+        };
+        if (commentsHeader.getAttribute("patched") === "true") {
+            return;
+        }
+
         commentsHeader.style = `
             cursor: pointer;
             color: rgb(102, 154, 179);
@@ -176,16 +210,6 @@ function makeCommentsSortable() {
 
     patchCommentsHeader();
 
-    const observer = new MutationObserver((mutations, observer) => {
-        let commentsHeader = document.querySelector(
-            "div.tm-comments-wrapper__wrapper > header > h2"
-        );
-        if (commentsHeader && !commentsHeader.hasAttribute("patched")) {
-            patchCommentsHeader();
-        }
-    });
-    observer.observe(document, {
-        subtree: true,
-        attributes: true,
-    });
+    setInterval(() => {patchCommentsHeader();}, 1000);
+
 }
