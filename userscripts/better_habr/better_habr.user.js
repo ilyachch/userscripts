@@ -80,12 +80,8 @@ function ExposeRating() {
     }
 
     function colorize_header(rating) {
-        let title_block = document.querySelector(
-            "h1.tm-title"
-        );
-        let title_el = document.querySelector(
-            "h1.tm-title span"
-        );
+        let title_block = document.querySelector("h1.tm-title");
+        let title_el = document.querySelector("h1.tm-title span");
 
         if (!rating.should_colorize || !title_block) {
             return;
@@ -185,14 +181,13 @@ function makeCommentsSortable() {
         });
     }
 
-
     function patchCommentsHeader() {
         let commentsHeader = document.querySelector(
             "div.tm-comments-wrapper__wrapper > header > h2"
         );
         if (!commentsHeader) {
             return;
-        };
+        }
         if (commentsHeader.getAttribute("patched") === "true") {
             return;
         }
@@ -210,6 +205,31 @@ function makeCommentsSortable() {
 
     patchCommentsHeader();
 
-    setInterval(() => {patchCommentsHeader();}, 1000);
+    setInterval(() => {
+        patchCommentsHeader();
+    }, 1000);
+}
 
+function improveCommentsVisibility() {
+    setTimeout(() => {
+        document
+            .querySelectorAll(".tm-comment-thread__comment")
+            .forEach(
+                (el) =>
+                    (el.style.cssText += `border-left: solid 5px grey; margin-left: -10px;`)
+            );
+        document
+            .querySelectorAll(".tm-comment-thread__children")
+            .forEach((el) => (el.style.cssText += "padding-top: 0;"));
+        document
+            .querySelectorAll(".tm-comment-thread")
+            .forEach((el) => (el.style.cssText += "margin-bottom: 0;"));
+        document
+            .querySelectorAll(".tm-comment-thread__comment")
+            .forEach(
+                (el) =>
+                    (el.style.cssText +=
+                        "padding-top: 10px; border-top: solid 1px grey;")
+            );
+    }, 1000);
 }
