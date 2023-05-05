@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      0.1.0
+// @version      0.1.1
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -45,7 +45,7 @@ function auto_next_episode() {
 }
 
 function add_year_links(){
-    if (!window.location.pathname.match(/\/\d{4}\//)) {
+    if (!window.location.pathname.match(/\/best.*?\/(\d{4})\//)){
         return
     }
     const year = parseInt(window.location.pathname.match(/\d{4}/)[0]);
