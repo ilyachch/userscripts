@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -147,7 +147,7 @@ function makeCommentsSortable() {
                 thread.querySelector(
                     ":scope > article.tm-comment-thread__comment .tm-votes-meter__value"
                 );
-            let rating = parseInt(ratingEl.innerHTML);
+            let rating = parseInt(ratingEl.innerHTML || "-999");
             let comment_id = parseInt(
                 thread
                     .querySelector(
