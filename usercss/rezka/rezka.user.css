@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         rezka style
 @namespace    ilyachch/userscripts
-@version      0.1.3
+@version      0.1.4
 @description  Custom CSS - rezka
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -10,18 +10,32 @@
 @license      MIT
 @preprocessor default
 ==/UserStyle== */
-
-@-moz-document domain("rezka.ag"), domain("rezka.pw"), domain("hdrezka.co"), domain("hdrezka.me") {
+@-moz-document url-prefix("https://rezka.ag/"),
+url-prefix("https://rezka.pw/"),
+url-prefix("https://hdrezka.co/"),
+url-prefix("https://hdrezka.me/")
+{
   body {
     min-width: auto;
+  }
+
+  #main {
+    padding-bottom: 0px !important;
+  }
+
+  #footer {
+    margin: 0 !important;
   }
 
   .b-wrapper {
     width: initial;
   }
+  .b-wrapper > .b-content__description {
+    display: none;
+  }
   .b-content {
     padding: 0;
-    margin: 0 10px;
+    margin: 10px;
   }
 
   .b-content__main ~ div {
@@ -65,40 +79,39 @@
     justify-content: center;
     align-items: flex-start;
   }
+  .b-content__inline_item.in-progress .b-content__inline_item-cover::before,
+  .b-content__inline_item.watched .b-content__inline_item-cover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .b-content__inline_item.in-progress .b-content__inline_item-cover::before {
+    box-shadow: inset 0px 0px 20px 10px #f0e68c;
+  }
+  .b-content__inline_item.watched .b-content__inline_item-cover::before {
+    box-shadow: inset 0px 0px 20px 10px #90ee90;
+  }
   .b-navigation {
     flex: 0 0 100%;
   }
   .b-content__inline_sidebar {
     display: none;
   }
-  .b-content__inline_inner_main, .b-content__inline_inner_mainprobar{
+  .b-content__inline_inner_main,
+  .b-content__inline_inner_mainprobar {
     padding: 0;
   }
-  /*
-    #newest-slider-content{
-        width: auto !important;
-        margin: 0 !important;
-        display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    }
-    .cntrl{
-        display: none !important;
-    }
-    .b-newest_slider{
-        padding: 0;
-        margin: 10px 10px 0 10px;
-    }
-        #newest-slider{
-        width: auto;
-    }
-
-    */
 
   #addcomment-title,
   #comments-form,
   #hd-comments-navigation,
-  #hd-comments-list {
+  #hd-comments-list,
+  #vk_groups {
     display: none;
   }
 
@@ -167,4 +180,40 @@
   .b-post__rating_table {
     margin: 20px 0;
   }
+}
+
+.b-content__inline_inner:has(
+    .b-favorites_content__sidebar,
+    .b-favorites_content__holder
+  ) {
+  display: grid;
+  grid-template-rows: auto auto;
+  padding: 0 10px;
+}
+
+.b-favorites_content__sidebar {
+  grid-row: 1;
+}
+.b-favorites_content__holder {
+  grid-row: 2;
+}
+
+/* favorites slider */
+.b-newest_slider_wrapper {
+  margin: 10px;
+}
+.b-newest_slider {
+  all: unset;
+}
+#newest-slider-content {
+  margin-left: 0 !important;
+  width: auto !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.b-newest_slider .cntrl {
+  display: none !important;
 }
