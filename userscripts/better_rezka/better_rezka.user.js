@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      0.1.1
+// @version      1.0.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -20,7 +20,7 @@
     "use strict";
     auto_next_episode();
     add_year_links();
-    update_duplicates_from_newest();
+    remove_duplicates_from_newest();
     remove_confirmation_request_before_mark_as_watched();
     parse_watched();
     mark_as_watched_or_in_progress();
@@ -84,35 +84,33 @@ function add_year_links() {
     }
 }
 
-function update_duplicates_from_newest() {
+function remove_duplicates_from_newest() {
+    const stack_size = 8;
+
+    // remove first 8 elements and last 8 elements
     let newest_slider_content = document.querySelector(
         "#newest-slider-content"
     );
     if (!newest_slider_content) {
         return;
     }
-    let newest_ids = [];
-    [...newest_slider_content.children]
-        .sort(
-            (a, b) =>
-                parseInt(a.getAttribute("data-id")) -
-                parseInt(b.getAttribute("data-id"))
-        )
-        .reverse()
-        .forEach((element) => {
-            newest_slider_content.appendChild(element);
-        });
     let newest_elements = document.querySelectorAll(
         "#newest-slider-content .b-content__inline_item"
     );
-    newest_elements.forEach((element) => {
-        let id = element.getAttribute("data-id");
-        if (newest_ids.includes(id)) {
-            element.remove();
-        } else {
-            newest_ids.push(id);
-        }
-    });
+    if (newest_elements.length < stack_size * 2) {
+        return;
+    }
+
+    for (let i = 0; i < stack_size; i++) {
+        newest_elements[i].remove();
+    }
+    for (
+        let i = newest_elements.length - 1;
+        i >= newest_elements.length - stack_size;
+        i--
+    ) {
+        newest_elements[i].remove();
+    }
 }
 
 function remove_confirmation_request_before_mark_as_watched() {
@@ -274,5 +272,5 @@ function mark_as_watched_or_in_progress() {
         } else if (in_progress.includes(id)) {
             item.classList.add("in-progress");
         }
-    })
+    });
 }

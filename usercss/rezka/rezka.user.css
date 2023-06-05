@@ -53,11 +53,16 @@ url-prefix("https://hdrezka.me/")
   body.active-brand.pp {
     padding-top: 0 !important;
   }
+  .b-player{
+    padding: 10px 0;
+  }
 
   .b-player__container_cdn {
-    height: 700px !important;
-    margin: 0 auto;
     width: 100% !important;
+    height: calc((100vw - 60px) / 1.77) !important;
+    max-width: 100%;
+    max-height: calc(90vh - 60px);
+    margin: 0 auto;
   }
 
   .b-player__holder_cdn {
@@ -180,40 +185,40 @@ url-prefix("https://hdrezka.me/")
   .b-post__rating_table {
     margin: 20px 0;
   }
-}
 
-.b-content__inline_inner:has(
-    .b-favorites_content__sidebar,
-    .b-favorites_content__holder
-  ) {
-  display: grid;
-  grid-template-rows: auto auto;
-  padding: 0 10px;
-}
+  .b-content__inline_inner:has(
+      .b-favorites_content__sidebar,
+      .b-favorites_content__holder
+    ) {
+    display: grid;
+    grid-template-rows: auto auto;
+    padding: 0 10px;
+  }
 
-.b-favorites_content__sidebar {
-  grid-row: 1;
-}
-.b-favorites_content__holder {
-  grid-row: 2;
-}
+  .b-favorites_content__sidebar {
+    grid-row: 1;
+  }
+  .b-favorites_content__holder {
+    grid-row: 2;
+  }
 
-/* favorites slider */
-.b-newest_slider_wrapper {
-  margin: 10px;
-}
-.b-newest_slider {
-  all: unset;
-}
-#newest-slider-content {
-  margin-left: 0 !important;
-  width: auto !important;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-}
-.b-newest_slider .cntrl {
-  display: none !important;
+  /* favorites slider */
+  .b-newest_slider_wrapper {
+    margin: 10px;
+  }
+  .b-newest_slider {
+    all: unset;
+  }
+  #newest-slider-content {
+    margin-left: 0 !important;
+    width: auto !important;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .b-newest_slider .cntrl {
+    display: none !important;
+  }
 }
