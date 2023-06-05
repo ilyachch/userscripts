@@ -53,6 +53,9 @@
   ytd-guide-section-renderer:has(a[href^="/@"]) {
     display: none !important;
   }
+  ytd-rich-item-renderer:has(ytd-thumbnail-overlay-time-status-renderer[overlay-style="SHORTS"]){
+    display: none !important;
+  }
 
   ytd-live-chat-frame {
     display: none !important;
