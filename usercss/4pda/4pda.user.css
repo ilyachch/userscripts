@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         4pda style
 @namespace    ilyachch/userscripts
-@version      0.0.1
+@version      0.1.0
 @description  Custom CSS - 4pda
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -12,7 +12,56 @@
 ==/UserStyle== */
 
 @-moz-document domain("4pda.to") {
-  .advanced-area {
+  :root {
+    --main-bg-color: rgb(24, 26, 27);
+  }
+  a[href*="utm_"] {
     display: none !important;
   }
+  .advanced-area,
+  .count-visitor {
+    display: none !important;
+  }
+  article.post {
+    display: none !important;
+  }
+  body > div:nth-child(1) > :nth-child(2) > :nth-child(1) > :nth-child(2) {
+    display: none !important;
+  }
+  body > div:nth-child(1) > :nth-child(2) > :nth-child(1) > :nth-child(6) {
+    background-image: none !important;
+  }
+  body
+    > div:nth-child(1)
+    > :nth-child(2)
+    > :nth-child(1)
+    > :nth-child(6)
+    > :nth-child(8)
+    > :nth-child(1)
+    > :nth-child(2) {
+    display: none !important;
+  }
+  body
+    > div:nth-child(1)
+    > :nth-child(2)
+    > :nth-child(1)
+    > :nth-child(6)
+    > :nth-child(8)
+    > :nth-child(1)
+    > :nth-child(1) {
+    width: 100% !important;
+    margin-top: 20px;
+  }
+
+  /* for debug purposes */
+  /* body
+    > div:nth-child(1)
+    > :nth-child(2)
+    > :nth-child(1)
+    > :nth-child(6)
+    > :nth-child(8)
+    > :nth-child(1)
+    > :nth-child(1) {
+    outline: 1px solid red !important;
+  } */
 }
