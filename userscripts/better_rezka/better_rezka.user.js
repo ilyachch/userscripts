@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      1.0.0
+// @version      1.1.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -24,6 +24,7 @@
     remove_confirmation_request_before_mark_as_watched();
     parse_watched();
     mark_as_watched_or_in_progress();
+    watch_newest_slider_content_block_changes();
 })();
 
 function auto_next_episode() {
@@ -87,7 +88,6 @@ function add_year_links() {
 function remove_duplicates_from_newest() {
     const stack_size = 8;
 
-    // remove first 8 elements and last 8 elements
     let newest_slider_content = document.querySelector(
         "#newest-slider-content"
     );
@@ -97,20 +97,94 @@ function remove_duplicates_from_newest() {
     let newest_elements = document.querySelectorAll(
         "#newest-slider-content .b-content__inline_item"
     );
-    if (newest_elements.length < stack_size * 2) {
+    if (!newest_elements) {
         return;
     }
 
-    for (let i = 0; i < stack_size; i++) {
-        newest_elements[i].remove();
+    let duplicates = [];
+
+    for (let i = 0; i < newest_elements.length; i++) {
+        let element = newest_elements[i];
+        let id = element.getAttribute("data-id");
+        let duplicates_count = 0;
+        for (let j = 0; j < newest_elements.length; j++) {
+            if (i == j) {
+                continue;
+            }
+            let other_element = newest_elements[j];
+            let other_id = other_element.getAttribute("data-id");
+            if (id == other_id) {
+                duplicates_count++;
+            }
+        }
+        if (duplicates_count > 0) {
+            duplicates.push(1);
+        } else {
+            duplicates.push(0);
+        }
     }
-    for (
-        let i = newest_elements.length - 1;
-        i >= newest_elements.length - stack_size;
-        i--
-    ) {
-        newest_elements[i].remove();
+
+    let duplicates_string = duplicates.join("");
+
+    let duplicates_string_parts_start = duplicates_string.match(/^1*/g)[0];
+
+    let duplicates_string_parts_end = duplicates_string.match(/1*$/g)[0];
+
+    let duplicates_string_parts_middle = duplicates_string.match(/0+/g)[0];
+
+    duplicates_string_parts_start =
+        "1".repeat(duplicates_string_parts_start.length / 2) +
+        "0".repeat(duplicates_string_parts_start.length / 2);
+
+    duplicates_string_parts_end =
+        "0".repeat(duplicates_string_parts_end.length / 2) +
+        "1".repeat(duplicates_string_parts_end.length / 2);
+
+    let duplicates_string_new =
+        duplicates_string_parts_start +
+        duplicates_string_parts_middle +
+        duplicates_string_parts_end;
+
+    let elements_to_remove = [];
+
+    for (let i = 0; i < duplicates_string_new.length; i++) {
+        if (duplicates_string_new[i] == 1) {
+            elements_to_remove.push(newest_elements[i]);
+        }
     }
+
+    elements_to_remove.forEach((element) => {
+        element.remove();
+    }
+    );
+}
+
+function watch_newest_slider_content_block_changes() {
+    const newest_slider_content = document.querySelector(
+        "#newest-slider-content"
+    );
+    if (!newest_slider_content) {
+        return;
+    }
+
+    let timer;
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === "childList") {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    remove_duplicates_from_newest();
+                    mark_as_watched_or_in_progress();
+                }, 500);
+            }
+        });
+    });
+
+    observer.observe(newest_slider_content, {
+        childList: true,
+        subtree: true,
+    });
 }
 
 function remove_confirmation_request_before_mark_as_watched() {
