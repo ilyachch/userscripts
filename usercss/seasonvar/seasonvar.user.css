@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         seasonvar style
 @namespace    ilyachch/userscripts
-@version      1.0.0
+@version      1.1.0
 @description  Custom CSS - seasonvar
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -255,6 +255,13 @@
     color: var(--text-color);
   }
 
+  .profile-menu{
+    background-color: var(--background-color);
+  }
+  .profile-menu a{
+    color: var(--text-color);
+  }
+
   /* item page */
 
   .pgs-sinfo div[itemprop="video"] {
@@ -329,7 +336,6 @@
   }
 
   .pgs-marks .tabs-result li.act div:has(.pgs-marks-el) {
-    outline: 1px solid red;
     position: initial !important;
     height: 100% !important;
     display: flex;
@@ -367,6 +373,21 @@
     padding: 0;
   }
 
+  /* blacklisted */
+
+  .pgs-blacklist-c [data-blacklist] a {
+    color: var(--text-color);
+  }
+  .pgs-blacklist-c [data-blacklist] a:hover {
+    background: initial;
+    text-decoration: underline;
+  }
+
+  .pgs-blacklist-c > div:nth-child(odd) {
+    background-image: none !important;
+    background: var(--background-color);
+  }
+
   @media screen and (max-width: 1279px) {
     body .wrapper .header .header_line {
       grid-template-areas:
@@ -378,12 +399,18 @@
     }
 
     body .wrapper .middle {
-      grid-template-areas: "content" !important;
+      grid-template-areas:
+        "left-menu"
+        "content" !important;
       grid-template-columns: 1fr !important;
     }
     body .wrapper .middle .sidebar {
       grid-area: unset !important;
       display: none !important;
+    }
+    body .wrapper .middle .sidebar.lside.profile {
+      grid-area: left-menu !important;
+      display: block !important;
     }
   }
 
@@ -403,7 +430,7 @@
       flex-direction: column;
     }
     .pgs-marks .tabs-result .pgs-marks-el {
-      width: 50%;
+      width: 100%;
     }
 
     .pgs-sinfo div[itemprop="video"] {
