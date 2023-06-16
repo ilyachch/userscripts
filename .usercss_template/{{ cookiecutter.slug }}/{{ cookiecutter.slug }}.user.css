@@ -11,6 +11,6 @@
 @preprocessor {{ cookiecutter.preprocessor }}
 ==/UserStyle== */
 
-@-moz-document {{ cookiecutter.filter_by }}("{{cookiecutter.name}}") {
+@-moz-document {{ cookiecutter.filter_by }}("{{cookiecutter.slug}}") {
     /* Your CSS goes here */
 }

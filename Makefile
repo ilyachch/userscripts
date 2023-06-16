@@ -14,3 +14,6 @@ simple_user_style: _check_cookiecutter_exists
 
 user_script: _check_cookiecutter_exists
 	@COOKIECUTTER_CONFIG=$(COOKIECUTTERRC) cookiecutter .userscript_template -o userscripts
+
+readme:
+	@python3 .scripts/fill_links.py
