@@ -1,6 +1,6 @@
 /* ==UserStyle==
 @name         {{ cookiecutter.name }} style
-@namespace    {{ cookiecutter.repository_name }}
+@namespace    {{ cookiecutter.namespace }}
 @version      {{ cookiecutter.version }}
 @description  {{ cookiecutter.description }}
 @author       {{ cookiecutter.author }}
