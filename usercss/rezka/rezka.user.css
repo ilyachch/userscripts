@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         rezka style
 @namespace    ilyachch/userscripts
-@version      0.1.5
+@version      0.1.6
 @description  Custom CSS - rezka
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -18,7 +18,9 @@ url-prefix("https://hdrezka.me/")
   body {
     min-width: auto;
   }
-
+  .glory {
+    display: none;
+  }
   #main {
     padding-bottom: 0px !important;
   }
@@ -53,7 +55,7 @@ url-prefix("https://hdrezka.me/")
   body.active-brand.pp {
     padding-top: 0 !important;
   }
-  .b-player{
+  .b-player {
     padding: 10px 0;
   }
 
@@ -209,7 +211,7 @@ url-prefix("https://hdrezka.me/")
   .b-newest_slider {
     all: unset;
   }
-  #newest-slider-holder{
+  #newest-slider-holder {
     height: auto !important;
   }
   #newest-slider-content {
