@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.2.2
+// @version      0.3.0
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -24,6 +24,7 @@
     "use strict";
     ExposeRating();
     makeCommentsSortable();
+    improveCommentsVisibility();
 })();
 
 function ExposeRating() {
