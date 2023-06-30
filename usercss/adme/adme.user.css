@@ -1,0 +1,55 @@
+/* ==UserStyle==
+@name         adme style
+@namespace    ilyachch/userscripts/styles
+@version      0.0.1
+@description  Custom CSS - adme
+@author       ilyachch (https://github.com/ilyachch/userscripts)
+@homepageURL  https://github.com/ilyachch/userscripts
+@supportURL   https://github.com/ilyachch/userscripts/issues
+@updateURL    https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/adme/adme.user.css
+@license      MIT
+@preprocessor default
+==/UserStyle== */
+
+@-moz-document domain("adme.media") {
+    .g-recaptcha + div:not([class]){
+        display: none;
+    }
+
+    main > div:not([data-sharing-target]){
+        display: none;
+    }
+
+    aside{
+        display: none;
+    }
+
+    main > div[data-test-id^="article-list-element"]{
+        display: none;
+    }
+
+    main > div[data-test-id^="article-list-element"]:has(div[data-test-id="description"]){
+        display: inline-flex;
+    }
+
+    div[data-test-id="left-vertical-sharing"]{
+        display: none;
+    }
+
+    article > div:has(h1[data-test-id="title"]){
+        width: 100%;
+    }
+
+    article div[data-test-id="top-sharing"]{
+        display: none;
+    }
+
+    div:has(div + div[data-test-id="bottom-sharing"]){
+        display: none;
+    }
+
+    div[data-test-id="article-bottom-recommended"]{
+        display: none;
+    }
+
+}
