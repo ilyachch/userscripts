@@ -20,6 +20,31 @@
 // @icon         https://assets.habr.com/habr-web/img/favicons/apple-touch-icon-76.png
 // ==/UserScript==
 
+const css = `
+.tm-comment-thread{
+    border-left: solid 5px grey;
+    margin: 0 0 0 5px;
+    padding-top: 10px;
+}
+.tm-comment-thread__children{
+    padding: 0;
+}
+button.tm-comment-thread__breadcrumbs{
+    width: 40px;
+}
+.tm-comment-thread__circle{
+    right: 16px;
+}
+div[data-comment-body]{
+    margin: 0 0 0 24px;
+}
+`
+
+let style = document.createElement('style');
+style.innerHTML = css;
+document.head.appendChild(style);
+
+
 (function () {
     "use strict";
     ExposeRating();
@@ -211,27 +236,3 @@ function makeCommentsSortable() {
         patchCommentsHeader();
     }, 1000);
 }
-
-let css = `
-.tm-comment-thread{
-    border-left: solid 5px grey;
-    margin: 0 0 0 5px;
-    padding-top: 10px;
-}
-.tm-comment-thread__children{
-    padding: 0;
-}
-button.tm-comment-thread__breadcrumbs{
-    width: 40px;
-}
-.tm-comment-thread__circle{
-    right: 16px;
-}
-div[data-comment-body]{
-    margin: 0 0 0 24px;
-}
-`
-
-let style = document.createElement('style');
-style.innerHTML = css;
-document.head.appendChild(style);

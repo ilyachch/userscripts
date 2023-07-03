@@ -199,6 +199,12 @@ userscripts/some_site/
 // @match        *://*/*
 // ==/UserScript==
 
+const css = ``
+
+let style = document.createElement('style');
+style.innerHTML = css;
+document.head.appendChild(style);
+
 (function () {
     "use strict";
 

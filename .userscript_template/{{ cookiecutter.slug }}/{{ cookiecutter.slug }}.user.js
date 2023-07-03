@@ -65,7 +65,14 @@ if (typeof GM_getResourceText === "undefined") {
     const styles = GM_getResourceText("styles");
     GM_addStyle(styles);
 }
-{% endif -%}
+{%- else -%}
+const css = ``
+
+let style = document.createElement('style');
+style.innerHTML = css;
+document.head.appendChild(style);
+{%- endif %}
+
 (function () {
     "use strict";
 
