@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.3.0
+// @version      0.4.0
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -24,7 +24,7 @@
     "use strict";
     ExposeRating();
     makeCommentsSortable();
-    improveCommentsVisibility();
+    // improveCommentsVisibility();
 })();
 
 function ExposeRating() {
@@ -212,26 +212,26 @@ function makeCommentsSortable() {
     }, 1000);
 }
 
-function improveCommentsVisibility() {
-    setTimeout(() => {
-        document
-            .querySelectorAll(".tm-comment-thread__comment")
-            .forEach(
-                (el) =>
-                    (el.style.cssText += `border-left: solid 5px grey; margin-left: -10px;`)
-            );
-        document
-            .querySelectorAll(".tm-comment-thread__children")
-            .forEach((el) => (el.style.cssText += "padding-top: 0;"));
-        document
-            .querySelectorAll(".tm-comment-thread")
-            .forEach((el) => (el.style.cssText += "margin-bottom: 0;"));
-        document
-            .querySelectorAll(".tm-comment-thread__comment")
-            .forEach(
-                (el) =>
-                    (el.style.cssText +=
-                        "padding-top: 10px; border-top: solid 1px grey;")
-            );
-    }, 1000);
+let css = `
+.tm-comment-thread{
+    border-left: solid 5px grey;
+    margin: 0 0 0 5px;
+    padding-top: 10px;
 }
+.tm-comment-thread__children{
+    padding: 0;
+}
+button.tm-comment-thread__breadcrumbs{
+    width: 40px;
+}
+.tm-comment-thread__circle{
+    right: 16px;
+}
+div[data-comment-body]{
+    margin: 0 0 0 24px;
+}
+`
+
+let style = document.createElement('style');
+style.innerHTML = css;
+document.head.appendChild(style);
