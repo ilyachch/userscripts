@@ -15,6 +15,9 @@
     .g-recaptcha + div:not([class]){
         display: none;
     }
+    main {
+        margin: 0 !important;
+    }
 
     main > div:not([data-sharing-target]){
         display: none;
@@ -38,18 +41,32 @@
 
     article > div:has(h1[data-test-id="title"]){
         width: 100%;
+        padding: 0;
     }
 
     article div[data-test-id="top-sharing"]{
         display: none;
     }
 
-    div:has(div + div[data-test-id="bottom-sharing"]){
+    /* div:has(div + div[data-test-id="bottom-sharing"]){
         display: none;
-    }
+    } */
 
     div[data-test-id="article-bottom-recommended"]{
         display: none;
     }
 
+    div:has(aside + main){
+        width: auto !important;
+    }
+    header{
+        width: auto !important;
+        min-width: auto !important;
+        height: auto !important;
+    }
+    @media screen and (max-width: 1000px) {
+        header{
+            display: none !important;
+        }
+    }
 }
