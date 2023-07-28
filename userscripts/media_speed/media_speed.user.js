@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.1.2
+// @version      0.1.3
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -19,9 +19,16 @@
 
 const localStorageKey = "user_media_speed";
 
+const FONT_BLOCK = `
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+`
+
 const STYLE = `
 :root{
     --font-size: 20px;
+    --font-family: 'Roboto Mono', monospace;
     --size: 40px;
     --border-radius: 30px;
     --placement: 25px;
@@ -30,7 +37,7 @@ const STYLE = `
 
 .user_media_speed_control{
     font-size: var(--font-size);
-    font-family: monospace;
+    font-family: var(--font-family);
     line-height: var(--size);
 
     display: flex;
@@ -50,10 +57,12 @@ const STYLE = `
     opacity: 0.7;
 }
 .user_media_speed_control_title, .user_media_speed_control_option{
+    display: flex;
     margin: var(--margin);
     width: var(--size);
     height: var(--size);
-    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .user_media_speed_control_title{
@@ -65,7 +74,7 @@ const STYLE = `
     display: none;
 }
 .user_media_speed_control:hover .user_media_speed_control_option{
-    display: block;
+    display: flex;
 }
 .user_media_speed_control_option.selected{
     font-weight: 600;
@@ -92,6 +101,7 @@ const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
 
     document.addEventListener("DOMContentLoaded", function (event) {
         GM_addStyle(STYLE);
+        document.head.insertAdjacentHTML("beforeend", FONT_BLOCK);
         if (document.querySelectorAll("video, audio").length > 0) {
             create_speed_control_element();
         }
