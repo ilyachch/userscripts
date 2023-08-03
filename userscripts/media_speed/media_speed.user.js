@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.1.3
+// @version      0.1.4
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -118,7 +118,7 @@ const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
     );
 
     document.addEventListener("keydown", function (event) {
-        if (currentPlayingElement) {
+        if (currentPlayingElement && currentPlayingElement == document.activeElement) {
             if (event.shiftKey && event.code == "ArrowRight") {
                 currentPlayingElement.currentTime += 90;
             } else if (event.shiftKey && event.code == "ArrowLeft") {
