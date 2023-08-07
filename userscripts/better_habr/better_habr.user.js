@@ -38,12 +38,11 @@ button.tm-comment-thread__breadcrumbs{
 div[data-comment-body]{
     margin: 0 0 0 24px;
 }
-`
+`;
 
-let style = document.createElement('style');
+let style = document.createElement("style");
 style.innerHTML = css;
 document.head.appendChild(style);
-
 
 (function () {
     "use strict";
@@ -58,7 +57,7 @@ function ExposeRating() {
         side,
         color = null,
         sign = null,
-        should_colorize = false
+        should_colorize = false,
     ) {
         this.score = score;
         this.side = side;
@@ -76,13 +75,13 @@ function ExposeRating() {
     function get_rating() {
         let rating_el =
             document.querySelector(
-                ".tm-article-rating span.tm-votes-lever__score-counter"
+                ".tm-article-rating span.tm-votes-lever__score-counter",
             ) ||
             document.querySelector(
-                ".tm-article-rating span.tm-votes-meter__value"
+                ".tm-article-rating span.tm-votes-meter__value",
             ) ||
             document.querySelector(
-                ".tm-article-comments__article-body span.tm-votes-meter__value"
+                ".tm-article-comments__article-body span.tm-votes-meter__value",
             );
         if (rating_el.innerText.startsWith("+")) {
             return new Rating(
@@ -90,7 +89,7 @@ function ExposeRating() {
                 "positive",
                 "#7aa600",
                 "+",
-                true
+                true,
             );
         } else if (rating_el.innerText.startsWith("-")) {
             return new Rating(
@@ -98,7 +97,7 @@ function ExposeRating() {
                 "negative",
                 "#d04e4e",
                 "-",
-                true
+                true,
             );
         } else {
             return new Rating(0, "neutral");
@@ -160,7 +159,7 @@ function makeCommentsSortable() {
 
     function sortComments(container) {
         let commentThreads = Array.from(
-            container.querySelectorAll(":scope > section.tm-comment-thread")
+            container.querySelectorAll(":scope > section.tm-comment-thread"),
         );
 
         let commentByRating = [];
@@ -168,19 +167,19 @@ function makeCommentsSortable() {
         commentThreads.forEach((thread) => {
             let ratingEl =
                 thread.querySelector(
-                    ":scope > article.tm-comment-thread__comment .tm-votes-lever__score-counter"
+                    ":scope > article.tm-comment-thread__comment .tm-votes-lever__score-counter",
                 ) ||
                 thread.querySelector(
-                    ":scope > article.tm-comment-thread__comment .tm-votes-meter__value"
+                    ":scope > article.tm-comment-thread__comment .tm-votes-meter__value",
                 );
-            let rating = !!(ratingEl) ? parseInt(ratingEl.innerHTML) : -1;
+            let rating = !!ratingEl ? parseInt(ratingEl.innerHTML) : -1;
 
             let comment_id = parseInt(
                 thread
                     .querySelector(
-                        ":scope > article.tm-comment-thread__comment > div[data-comment-body]"
+                        ":scope > article.tm-comment-thread__comment > div[data-comment-body]",
                     )
-                    .getAttribute("data-comment-body")
+                    .getAttribute("data-comment-body"),
             );
             commentByRating.push({ rating, thread, comment_id });
         });
@@ -200,7 +199,7 @@ function makeCommentsSortable() {
         commentByRating.forEach((comment) => {
             container.appendChild(comment.thread);
             let inner_contaner = comment.thread.querySelector(
-                ":scope > .tm-comment-thread__children"
+                ":scope > .tm-comment-thread__children",
             );
             if (!!inner_contaner) {
                 sortComments(inner_contaner);
@@ -210,7 +209,7 @@ function makeCommentsSortable() {
 
     function patchCommentsHeader() {
         let commentsHeader = document.querySelector(
-            "div.tm-comments-wrapper__wrapper > header > h2"
+            "div.tm-comments-wrapper__wrapper > header > h2",
         );
         if (!commentsHeader) {
             return;

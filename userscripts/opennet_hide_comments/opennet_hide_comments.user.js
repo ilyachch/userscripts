@@ -12,25 +12,21 @@
 // @match        https://www.opennet.ru/opennews/art.shtml?num=*
 // @grant        none
 // @license      MIT
-
+// @run-at       document-end
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=opennet.ru
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+    "use strict";
 
-    remove_comments()
+    remove_comments();
 })();
 
-function remove_comments(){
-    let elements_params_to_hide = [
-        '#lenta_nav',
-        '.ctxt',
-    ]
-    elements_params_to_hide.forEach(element => {
-        document.querySelectorAll(element).forEach(element => {
-            element.remove()
-        })
+function remove_comments() {
+    let elements_params_to_hide = ["#lenta_nav", ".ctxt"];
+    elements_params_to_hide.forEach((element) => {
+        document.querySelectorAll(element).forEach((element) => {
+            element.remove();
+        });
     });
-
 }

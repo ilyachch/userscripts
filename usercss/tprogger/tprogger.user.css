@@ -12,7 +12,7 @@
 ==/UserStyle== */
 
 @-moz-document domain("tproger.ru") {
-    .float-widget-container{
-        display: none !important;
-    }
+  .float-widget-container {
+    display: none !important;
+  }
 }
