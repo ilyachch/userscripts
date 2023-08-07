@@ -3,9 +3,10 @@
 # Scripts
 <!-- start_scripts_links -->
 * [Better Opennet script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/opennet_hide_comments/opennet_hide_comments.user.js) - 0.1.1
-* [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.2.1
+* [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.0
 * [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 1.1.0
-* [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.1.1
+* [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.1.4
+* [Obsidian Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/obsidian_markdown_tools/obsidian_markdown_tools.user.js) - 0.0.1
 * [Pikabu tabs](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js) - 0.0.1
 <!-- end_scripts_links -->
 
@@ -20,6 +21,7 @@
 <!-- start_styles_links -->
 * [4pda style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/4pda/4pda.user.css) - 0.1.0
 * [acomics style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/acomics/acomics.user.css) - 0.0.1
+* [adme style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/adme/adme.user.css) - 0.0.2
 * [dcealopez style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/dcealopez/dcealopez.user.css) - 0.0.1
 * [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.1
 * [free-freecell-solitair style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecell_solitair/free_freecell_solitair.user.css) - 0.0.1
