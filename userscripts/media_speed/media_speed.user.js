@@ -23,7 +23,7 @@ const FONT_BLOCK = `
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-`
+`;
 
 const STYLE = `
 :root{
@@ -96,7 +96,7 @@ const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
             create_speed_control_element();
             set_selected_speed_option_active(speed);
         },
-        true
+        true,
     );
 
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -114,11 +114,14 @@ const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
             set_playback_speed(speed);
             set_selected_speed_option_active(speed);
         },
-        true
+        true,
     );
 
     document.addEventListener("keydown", function (event) {
-        if (currentPlayingElement && currentPlayingElement == document.activeElement) {
+        if (
+            currentPlayingElement &&
+            currentPlayingElement == document.activeElement
+        ) {
             if (event.shiftKey && event.code == "ArrowRight") {
                 currentPlayingElement.currentTime += 90;
             } else if (event.shiftKey && event.code == "ArrowLeft") {
@@ -140,7 +143,7 @@ function set_selected_speed_option_active(speed) {
         });
     document
         .querySelector(
-            `.user_media_speed_control_option[data-speed="${speed}"]`
+            `.user_media_speed_control_option[data-speed="${speed}"]`,
         )
         .classList.add("selected");
     document.querySelector(".user_media_speed_control_title").innerText = speed;
@@ -194,7 +197,7 @@ function create_speed_control_element() {
                         speed: speed,
                         source: speed_option,
                     },
-                })
+                }),
             );
         });
         speed_control.appendChild(speed_option);

@@ -35,7 +35,7 @@ function auto_next_episode() {
         mutations.forEach((mutation) => {
             if (mutation.type === "childList") {
                 const nextEpisodeLoader = document.querySelector(
-                    ".b-player__next_episode_loader"
+                    ".b-player__next_episode_loader",
                 );
                 if (nextEpisodeLoader) {
                     setTimeout(() => {
@@ -72,11 +72,11 @@ function add_year_links() {
 
     const next_year_link = make_link(
         window.location.pathname.replace(/\d{4}\/.*/, `${next_year}/`),
-        `${next_year}`
+        `${next_year}`,
     );
     const prev_year_link = make_link(
         window.location.pathname.replace(/\d{4}\/.*/, `${prev_year}/`),
-        `${prev_year}`
+        `${prev_year}`,
     );
 
     header.appendChild(prev_year_link);
@@ -89,13 +89,13 @@ function remove_duplicates_from_newest() {
     const stack_size = 8;
 
     let newest_slider_content = document.querySelector(
-        "#newest-slider-content"
+        "#newest-slider-content",
     );
     if (!newest_slider_content) {
         return;
     }
     let newest_elements = document.querySelectorAll(
-        "#newest-slider-content .b-content__inline_item"
+        "#newest-slider-content .b-content__inline_item",
     );
     if (!newest_elements) {
         return;
@@ -155,13 +155,12 @@ function remove_duplicates_from_newest() {
 
     elements_to_remove.forEach((element) => {
         element.remove();
-    }
-    );
+    });
 }
 
 function watch_newest_slider_content_block_changes() {
     const newest_slider_content = document.querySelector(
-        "#newest-slider-content"
+        "#newest-slider-content",
     );
     if (!newest_slider_content) {
         return;
@@ -204,7 +203,7 @@ function remove_confirmation_request_before_mark_as_watched() {
         xhr.open("POST", url, true);
         xhr.setRequestHeader(
             "Content-Type",
-            "application/x-www-form-urlencoded"
+            "application/x-www-form-urlencoded",
         );
         xhr.send(data);
 
@@ -227,11 +226,11 @@ function remove_confirmation_request_before_mark_as_watched() {
         new_button.setAttribute("data-id", button.getAttribute("data-id"));
         new_button.setAttribute(
             "data-text-watch",
-            button.getAttribute("data-text-watch")
+            button.getAttribute("data-text-watch"),
         );
         new_button.setAttribute(
             "data-text-unwatch",
-            button.getAttribute("data-text-unwatch")
+            button.getAttribute("data-text-unwatch"),
         );
         new_button.style.border = "none";
         new_button.style.backgroundColor = "transparent";
@@ -252,7 +251,7 @@ function remove_confirmation_request_before_mark_as_watched() {
         xhr.open("POST", url, true);
         xhr.setRequestHeader(
             "Content-Type",
-            "application/x-www-form-urlencoded"
+            "application/x-www-form-urlencoded",
         );
         xhr.send(data);
 
@@ -302,7 +301,7 @@ function parse_watched() {
                 return;
             }
             let items = continue_block.querySelectorAll(
-                ".b-videosaves__list_item"
+                ".b-videosaves__list_item",
             );
             items.forEach((item) => {
                 if (!item.getAttribute("id")) {

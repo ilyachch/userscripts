@@ -125,8 +125,8 @@ class Menu {
 
     menu.appendChild(
         new MenuItem(MENU_ITEM_CLASS, "Copy link in Markdown format", () =>
-            copyToClipboard(getLinkInMarkdownFormat())
-        )
+            copyToClipboard(getLinkInMarkdownFormat()),
+        ),
     );
 
     document.addEventListener("keydown", (event) => {

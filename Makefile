@@ -17,3 +17,7 @@ user_script: _check_cookiecutter_exists
 
 readme:
 	@python3 .scripts/fill_links.py
+
+format:
+	@prettier --write usercss
+	@prettier --write userscripts

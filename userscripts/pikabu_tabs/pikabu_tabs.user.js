@@ -25,7 +25,7 @@
 
     document.addEventListener("DOMSubtreeModified", function () {
         let ad_blocks = document.querySelectorAll(
-            "article[data-ad-type='feed']"
+            "article[data-ad-type='feed']",
         );
         for (let ad_block of ad_blocks) {
             ad_block.remove();
