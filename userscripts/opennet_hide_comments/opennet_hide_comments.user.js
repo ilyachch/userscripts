@@ -12,7 +12,7 @@
 // @match        https://www.opennet.ru/opennews/art.shtml?num=*
 // @grant        none
 // @license      MIT
-
+// @run-at       document-end
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=opennet.ru
 // ==/UserScript==
 
