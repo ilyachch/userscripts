@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.1.5
+// @version      0.1.6
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -82,6 +82,9 @@ const STYLE = `
 `;
 
 const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
+const DEFAULT_VIDEO_STEP = 5;
+const MEDIUM_VIDEO_STEP = 30;
+const LARGE_VIDEO_STEP = 90;
 
 (function () {
     "use strict";
@@ -118,18 +121,26 @@ const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
     );
 
     document.addEventListener("keydown", function (event) {
+        const focusedElement = document.querySelector(":focus");
+
         if (
             currentPlayingElement &&
-            !document.querySelector(":focus")
+            (!focusedElement ||
+                (focusedElement.tagName !== "INPUT" &&
+                    focusedElement.tagName !== "TEXTAREA"))
         ) {
-            if (event.shiftKey && event.code == "ArrowRight") {
-                currentPlayingElement.currentTime += 90;
-            } else if (event.shiftKey && event.code == "ArrowLeft") {
-                currentPlayingElement.currentTime -= 90;
-            } else if (event.ctrlKey && event.code == "ArrowRight") {
-                currentPlayingElement.currentTime += 30;
-            } else if (event.ctrlKey && event.code == "ArrowLeft") {
-                currentPlayingElement.currentTime -= 30;
+            if (event.shiftKey && event.code === "ArrowRight") {
+                currentPlayingElement.currentTime +=
+                    LARGE_VIDEO_STEP - DEFAULT_VIDEO_STEP;
+            } else if (event.shiftKey && event.code === "ArrowLeft") {
+                currentPlayingElement.currentTime -=
+                    LARGE_VIDEO_STEP - DEFAULT_VIDEO_STEP;
+            } else if (event.ctrlKey && event.code === "ArrowRight") {
+                currentPlayingElement.currentTime +=
+                    MEDIUM_VIDEO_STEP - DEFAULT_VIDEO_STEP;
+            } else if (event.ctrlKey && event.code === "ArrowLeft") {
+                currentPlayingElement.currentTime -=
+                    MEDIUM_VIDEO_STEP - DEFAULT_VIDEO_STEP;
             }
         }
     });
