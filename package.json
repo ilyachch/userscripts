@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "format": "prettier --write \"userscripts/**/*.js\" \"usercss/**/*.css\"",
-    "build-userscripts": "./build-userscripts.sh"
+    "build-userscripts": ".scripts/build-userscripts.sh"
 },
   "repository": {
     "type": "git",

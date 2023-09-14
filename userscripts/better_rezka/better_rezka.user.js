@@ -459,6 +459,7 @@ class Database {
 class Parser {
     constructor() {
         this.parser = new DOMParser();
+        this.db = new Database("VideoStatusDatabase", "statuses");
     }
 
     async parseWatched() {
@@ -561,51 +562,74 @@ class Parser {
 
         return statuses;
     }
+
+    async parseAndSaveMarks() {
+        const videoStatus = await this.parseMarks();
+        await this.db.save("currentStatus", videoStatus.toJSON());
+    }
 }
 
-async function parseAndSaveMarks() {
-    const parser = new Parser();
-    const videoStatusDB = new Database("VideoStatusDatabase", "statuses");
-
-    const videoStatus = await parser.parseMarks();
-    await videoStatusDB.save("currentStatus", videoStatus.toJSON());
-}
-
-async function markVideoStatusOnPage() {
-    const videoStatusDB = new Database("VideoStatusDatabase", "statuses");
-
-    const serializedVideoStatus = await videoStatusDB.get("currentStatus");
-
-    if (!serializedVideoStatus) {
-        return;
+class Marker {
+    constructor() {
+        this.db = new Database("VideoStatusDatabase", "statuses");
     }
 
-    const videoStatus = VideoStatus.fromJSON(serializedVideoStatus);
+    async getVideoStatus(){
+        const serializedVideoStatus = await this.db.get("currentStatus");
 
-    let items = document.querySelectorAll(".b-content__inline_item");
+        if (!serializedVideoStatus) {
+            return null;
+        }
 
-    items.forEach((item) => {
-        let id = item.getAttribute("data-id");
+        return VideoStatus.fromJSON(serializedVideoStatus);
+    }
 
-        if (!id) {
+    async markAs(listName, videoName) {
+        const serializedVideoStatus = await this.db.get("currentStatus");
+
+        if (!serializedVideoStatus) {
             return;
         }
 
-        // Убираем все возможные статусы перед применением нового
-        ["watched", "in_progress", "to_watch", "dropped"].forEach((status) => {
-            item.classList.remove(status);
-        });
+        const videoStatus = VideoStatus.fromJSON(serializedVideoStatus);
 
-        if (videoStatus.watched.includes(id)) {
-            item.classList.add("watched");
-        } else if (videoStatus.inProgress.includes(id)) {
-            item.classList.add("in-progress");
-        } else if (videoStatus.toWatch.includes(id)) {
-            item.classList.add("to-watch");
-        } else if (videoStatus.dropped.includes(id)) {
-            item.classList.add("dropped");
+        videoStatus.removeFromAnyList(videoName);
+        videoStatus.addToList(listName, videoName);
+
+        await this.db.save("currentStatus", videoStatus.toJSON());
+    }
+
+    async markVideosWithStatuses(){
+        const videoStatus = await this.getVideoStatus();
+
+        if (!videoStatus) {
+            return;
         }
-    });
+
+        let items = document.querySelectorAll(".b-content__inline_item");
+
+        items.forEach((item) => {
+            let id = item.getAttribute("data-id");
+
+            if (!id) {
+                return;
+            }
+
+            ["watched", "in_progress", "to_watch", "dropped"].forEach((status) => {
+                item.classList.remove(status);
+            });
+
+            if (videoStatus.watched.includes(id)) {
+                item.classList.add("watched");
+            } else if (videoStatus.inProgress.includes(id)) {
+                item.classList.add("in-progress");
+            } else if (videoStatus.toWatch.includes(id)) {
+                item.classList.add("to-watch");
+            } else if (videoStatus.dropped.includes(id)) {
+                item.classList.add("dropped");
+            }
+        });
+    }
 }
 
 (function () {
@@ -613,11 +637,14 @@ async function markVideoStatusOnPage() {
 
     GM_addStyle(STYLE);
 
+    const parser = new Parser();
+    const marker = new Marker();
+
     auto_next_episode();
     add_year_links();
     remove_duplicates_from_newest();
     remove_confirmation_request_before_mark_as_watched();
-    parseAndSaveMarks();
-    markVideoStatusOnPage();
+    parser.parseAndSaveMarks();
+    marker.markVideosWithStatuses();
     watch_newest_slider_content_block_changes();
 })();

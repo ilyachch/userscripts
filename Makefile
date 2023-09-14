@@ -19,5 +19,9 @@ readme:
 	@python3 .scripts/fill_links.py
 
 format:
-	@prettier --write usercss
-	@prettier --write userscripts
+	@npm run format
+
+build:
+	@npm run build-userscripts
+
+all: format build readme
