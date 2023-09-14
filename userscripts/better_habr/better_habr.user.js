@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better habr script
 // @namespace    ilyachch/userscripts
-// @version      0.4.0
+// @version      0.4.1
 // @description  Custom Script - Better habr
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -17,10 +17,11 @@
 // @match        https://habr.com/*/articles/*/*
 // @match        https://habr.com/**/company/**/**/*
 
+// @grant        GM_addStyle
 // @icon         https://assets.habr.com/habr-web/img/favicons/apple-touch-icon-76.png
 // ==/UserScript==
 
-const css = `
+const STYLE = `
 .tm-comment-thread{
     border-left: solid 5px grey;
     margin: 0 0 0 5px;
@@ -40,9 +41,7 @@ div[data-comment-body]{
 }
 `;
 
-let style = document.createElement("style");
-style.innerHTML = css;
-document.head.appendChild(style);
+GM_addStyle(STYLE);
 
 (function () {
     "use strict";
