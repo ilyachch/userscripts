@@ -4,9 +4,9 @@
 <!-- start_scripts_links -->
 * [Better Opennet script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/opennet_hide_comments/opennet_hide_comments.user.js) - 0.1.1
 * [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.0
-* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 1.1.0
+* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.0.0
 * [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.1.6
-* [Obsidian Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/obsidian_markdown_tools/obsidian_markdown_tools.user.js) - 0.0.1
+* [Obsidian Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/obsidian_markdown_tools/obsidian_markdown_tools.user.js) - 0.1.0
 * [Pikabu tabs](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js) - 0.0.1
 <!-- end_scripts_links -->
 
@@ -28,7 +28,7 @@
 * [free-play-sudoku style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_play_sudoku/free_play_sudoku.user.css) - 0.0.1
 * [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.1
 * [kinopoisk style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/kinopoisk/kinopoisk.user.css) - 0.0.1
-* [rezka style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rezka/rezka.user.css) - 0.1.6
+* [rezka style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rezka/rezka.user.css) - 0.2.0
 * [rollbar style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rollbar/rollbar.user.css) - 0.0.1
 * [seasonvar style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/seasonvar/seasonvar.user.css) - 1.1.0
 * [tprogger style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/tprogger/tprogger.user.css) - 0.0.1

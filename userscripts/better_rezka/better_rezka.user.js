@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      1.1.0
+// @version      2.0.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -13,19 +13,37 @@
 
 // @run-at       document-end
 // @match        *://rezka.ag/*
+// @grant        GM_addStyle
 // @icon         https://static.hdrezka.ac/templates/hdrezka/images/favicon.ico
 // ==/UserScript==
 
-(function () {
-    "use strict";
-    auto_next_episode();
-    add_year_links();
-    remove_duplicates_from_newest();
-    remove_confirmation_request_before_mark_as_watched();
-    parse_watched();
-    mark_as_watched_or_in_progress();
-    watch_newest_slider_content_block_changes();
-})();
+const STYLE = `
+.b-content__inline_item.watched .b-content__inline_item-cover::before,
+.b-content__inline_item.in-progress .b-content__inline_item-cover::before,
+.b-content__inline_item.to-watch .b-content__inline_item-cover::before,
+.b-content__inline_item.dropped .b-content__inline_item-cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.b-content__inline_item.in-progress .b-content__inline_item-cover::before {
+  box-shadow: inset 0px 0px 20px 10px #f0e68c;
+}
+.b-content__inline_item.watched .b-content__inline_item-cover::before {
+  box-shadow: inset 0px 0px 20px 10px #90ee90;
+}
+.b-content__inline_item.dropped .b-content__inline_item-cover::before {
+  box-shadow: inset 0px 0px 20px 10px #ee9090;
+}
+.b-content__inline_item.to-watch .b-content__inline_item-cover::before {
+  box-shadow: inset 0px 0px 20px 10px #90b1ee;
+}
+`;
 
 function auto_next_episode() {
     if (!window.location.pathname.match(/\/\d+-.*?\.html/)) {
@@ -281,69 +299,325 @@ function remove_confirmation_request_before_mark_as_watched() {
     });
 }
 
-function parse_watched() {
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "/continue/", true);
-    xhr.send();
+class VideoStatus {
+    constructor() {
+        this.toWatch = [];
+        this.watched = [];
+        this.inProgress = [];
+        this.dropped = [];
+    }
 
-    let watched = [];
-    let in_progress = [];
+    toJSON() {
+        return {
+            toWatch: this.toWatch,
+            watched: this.watched,
+            inProgress: this.inProgress,
+            dropped: this.dropped,
+        };
+    }
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState != 4) return;
-        if (xhr.status != 200) {
-            console.log(xhr.status + ": " + xhr.statusText);
+    static fromJSON(json) {
+        const videoStatus = new VideoStatus();
+        videoStatus.toWatch = json.toWatch || [];
+        videoStatus.watched = json.watched || [];
+        videoStatus.inProgress = json.inProgress || [];
+        videoStatus.dropped = json.dropped || [];
+        return videoStatus;
+    }
+
+    addToList(listName, videoName) {
+        if (this.hasOwnProperty(listName) && typeof videoName === "string") {
+            this[listName].push(videoName);
         } else {
-            let parser = new DOMParser();
-            let doc = parser.parseFromString(xhr.responseText, "text/html");
-            let continue_block = doc.querySelector("#videosaves-list");
-            if (!continue_block) {
-                return;
-            }
-            let items = continue_block.querySelectorAll(
-                ".b-videosaves__list_item",
-            );
-            items.forEach((item) => {
-                if (!item.getAttribute("id")) {
-                    return;
-                }
-                let link = item
-                    .querySelector(".td.title a")
-                    .getAttribute("href");
-                let id = link.match(/\/(\d+?)-/)[1];
-                if (item.classList.contains("watched-row")) {
-                    watched.push(id);
-                } else {
-                    in_progress.push(id);
-                }
-            });
+            console.error("Invalid list or video name");
         }
-        localStorage.setItem("watched", JSON.stringify(watched));
-        localStorage.setItem("in_progress", JSON.stringify(in_progress));
-    };
+    }
+
+    removeFromList(listName, videoName) {
+        if (this.hasOwnProperty(listName)) {
+            this[listName] = this[listName].filter(
+                (item) => item !== videoName,
+            );
+        } else {
+            console.error("Invalid list name");
+        }
+    }
+
+    merge(other) {
+        if (!(other instanceof VideoStatus)) {
+            console.error("The given object is not an instance of VideoStatus");
+            return;
+        }
+
+        let result = new VideoStatus();
+
+        for (let listName in this) {
+            if (this.hasOwnProperty(listName)) {
+                this[listName].forEach((videoName) => {
+                    // If the video exists in the other list, it will be added later.
+                    if (!other.containsVideo(videoName)) {
+                        result.addToList(listName, videoName);
+                    }
+                });
+            }
+        }
+
+        for (let listName in other) {
+            if (other.hasOwnProperty(listName)) {
+                other[listName].forEach((videoName) => {
+                    // Add or move the video to the list from the "other" object.
+                    result.removeFromAnyList(videoName);
+                    result.addToList(listName, videoName);
+                });
+            }
+        }
+
+        return result;
+    }
+
+    containsVideo(videoName) {
+        for (let listName in this) {
+            if (
+                this.hasOwnProperty(listName) &&
+                this[listName].includes(videoName)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    removeFromAnyList(videoName) {
+        for (let listName in this) {
+            if (this.hasOwnProperty(listName)) {
+                this.removeFromList(listName, videoName);
+            }
+        }
+    }
 }
 
-function mark_as_watched_or_in_progress() {
-    let watched_raw = localStorage.getItem("watched");
-    let in_progress_raw = localStorage.getItem("in_progress");
+class Database {
+    constructor(dbName, storeName) {
+        this.dbName = dbName;
+        this.storeName = storeName;
+    }
 
-    if (!watched_raw || !in_progress_raw) {
+    async open() {
+        return new Promise((resolve, reject) => {
+            const openRequest = indexedDB.open(this.dbName, 1);
+
+            openRequest.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(this.storeName)) {
+                    db.createObjectStore(this.storeName);
+                }
+            };
+
+            openRequest.onsuccess = () => {
+                resolve(openRequest.result);
+            };
+
+            openRequest.onerror = () => {
+                reject(openRequest.error);
+            };
+        });
+    }
+
+    async save(key, value) {
+        const db = await this.open();
+        const transaction = db.transaction(this.storeName, "readwrite");
+        const store = transaction.objectStore(this.storeName);
+
+        return new Promise((resolve, reject) => {
+            const request = store.put(value, key);
+            request.onsuccess = () => {
+                resolve(request.result);
+            };
+            request.onerror = () => {
+                reject(request.error);
+            };
+        });
+    }
+
+    async get(key) {
+        const db = await this.open();
+        const transaction = db.transaction(this.storeName, "readonly");
+        const store = transaction.objectStore(this.storeName);
+
+        return new Promise((resolve, reject) => {
+            const request = store.get(key);
+            request.onsuccess = () => {
+                resolve(request.result);
+            };
+            request.onerror = () => {
+                reject(request.error);
+            };
+        });
+    }
+}
+
+class Parser {
+    constructor() {
+        this.parser = new DOMParser();
+    }
+
+    async parseWatched() {
+        const response = await fetch("/continue/");
+
+        if (!response.ok) {
+            console.error(`${response.status}: ${response.statusText}`);
+            return null;
+        }
+
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, "text/html");
+
+        const continue_block = doc.querySelector("#videosaves-list");
+        if (!continue_block) {
+            return null;
+        }
+
+        let videoStatus = new VideoStatus();
+
+        const items = continue_block.querySelectorAll(
+            ".b-videosaves__list_item",
+        );
+        for (const item of items) {
+            if (!item.getAttribute("id")) {
+                continue;
+            }
+            let link = item.querySelector(".td.title a").getAttribute("href");
+            let id = link.match(/\/(\d+?)-/)[1];
+            if (item.classList.contains("watched-row")) {
+                videoStatus.addToList("watched", id);
+            } else {
+                videoStatus.addToList("inProgress", id);
+            }
+        }
+
+        return videoStatus;
+    }
+
+    async fetchFavoritesByCategory(categoryURL) {
+        const response = await fetch(categoryURL);
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch folder ${categoryURL}: ${response.statusText}`,
+            );
+        }
+
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, "text/html");
+
+        const videoElements = doc.querySelectorAll(".b-content__inline_item");
+        const videoIds = [...videoElements].map((el) =>
+            el.getAttribute("data-id"),
+        );
+
+        return videoIds;
+    }
+
+    async parseFavorites() {
+        const baseUrl = "/favorites/";
+        const response = await fetch(baseUrl);
+        if (!response.ok) {
+            throw new Error(
+                `Failed to fetch favourites ${baseUrl}: ${response.statusText}`,
+            );
+        }
+
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, "text/html");
+
+        const categoryLinks = doc.querySelectorAll(
+            ".b-favorites_content__cats_list_link",
+        );
+
+        const videoStatus = new VideoStatus();
+
+        for (const link of categoryLinks) {
+            const category = link.querySelector(".name").textContent;
+            const href = link.getAttribute("href");
+
+            if (videoStatus.hasOwnProperty(category)) {
+                const ids = await this.fetchFavoritesByCategory(href);
+                ids.forEach((id) => videoStatus.addToList(category, id));
+            }
+        }
+
+        return videoStatus;
+    }
+
+    async parseMarks() {
+        let statuses = new VideoStatus();
+        const watchedStatus = await this.parseWatched();
+        const favoritesStatus = await this.parseFavorites();
+
+        statuses = statuses.merge(watchedStatus);
+        statuses = statuses.merge(favoritesStatus);
+
+        return statuses;
+    }
+}
+
+async function parseAndSaveMarks() {
+    const parser = new Parser();
+    const videoStatusDB = new Database("VideoStatusDatabase", "statuses");
+
+    const videoStatus = await parser.parseMarks();
+    await videoStatusDB.save("currentStatus", videoStatus.toJSON());
+}
+
+async function markVideoStatusOnPage() {
+    const videoStatusDB = new Database("VideoStatusDatabase", "statuses");
+
+    const serializedVideoStatus = await videoStatusDB.get("currentStatus");
+
+    if (!serializedVideoStatus) {
         return;
     }
 
-    let watched = JSON.parse(watched_raw);
-    let in_progress = JSON.parse(in_progress_raw);
+    const videoStatus = VideoStatus.fromJSON(serializedVideoStatus);
 
     let items = document.querySelectorAll(".b-content__inline_item");
+
     items.forEach((item) => {
         let id = item.getAttribute("data-id");
+
         if (!id) {
             return;
         }
-        if (watched.includes(id)) {
+
+        // Убираем все возможные статусы перед применением нового
+        ["watched", "in_progress", "to_watch", "dropped"].forEach((status) => {
+            item.classList.remove(status);
+        });
+
+        if (videoStatus.watched.includes(id)) {
             item.classList.add("watched");
-        } else if (in_progress.includes(id)) {
+        } else if (videoStatus.inProgress.includes(id)) {
             item.classList.add("in-progress");
+        } else if (videoStatus.toWatch.includes(id)) {
+            item.classList.add("to-watch");
+        } else if (videoStatus.dropped.includes(id)) {
+            item.classList.add("dropped");
         }
     });
 }
+
+(function () {
+    "use strict";
+
+    GM_addStyle(STYLE);
+
+    auto_next_episode();
+    add_year_links();
+    remove_duplicates_from_newest();
+    remove_confirmation_request_before_mark_as_watched();
+    parseAndSaveMarks();
+    markVideoStatusOnPage();
+    watch_newest_slider_content_block_changes();
+})();
