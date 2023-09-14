@@ -1,0 +1,24 @@
+{
+  "name": "userscripts",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "format": "prettier --write \"userscripts/**/*.js\" \"usercss/**/*.css\"",
+    "build-userscripts": "./build-userscripts.sh"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilyachch/userscripts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilyachch/userscripts/issues"
+  },
+  "homepage": "https://github.com/ilyachch/userscripts#readme",
+  "devDependencies": {
+    "esbuild": "^0.19.3",
+    "prettier": "^3.0.3"
+  }
+}
