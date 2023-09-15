@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         tprogger style
 @namespace    ilyachch/userscripts/styles
-@version      0.2.0
+@version      1.0.0
 @description  Custom CSS - tprogger
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -25,6 +25,10 @@
   }
 
   .tp-listok-pop-up {
+    display: none !important;
+  }
+
+  .tp-post-page__container-listok-end-content{
     display: none !important;
   }
 }
