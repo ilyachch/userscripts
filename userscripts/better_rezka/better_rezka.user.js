@@ -574,7 +574,7 @@ class Marker {
         this.db = new Database("VideoStatusDatabase", "statuses");
     }
 
-    async getVideoStatus(){
+    async getVideoStatus() {
         const serializedVideoStatus = await this.db.get("currentStatus");
 
         if (!serializedVideoStatus) {
@@ -599,7 +599,7 @@ class Marker {
         await this.db.save("currentStatus", videoStatus.toJSON());
     }
 
-    async markVideosWithStatuses(){
+    async markVideosWithStatuses() {
         const videoStatus = await this.getVideoStatus();
 
         if (!videoStatus) {
@@ -615,9 +615,11 @@ class Marker {
                 return;
             }
 
-            ["watched", "in_progress", "to_watch", "dropped"].forEach((status) => {
-                item.classList.remove(status);
-            });
+            ["watched", "in_progress", "to_watch", "dropped"].forEach(
+                (status) => {
+                    item.classList.remove(status);
+                },
+            );
 
             if (videoStatus.watched.includes(id)) {
                 item.classList.add("watched");
