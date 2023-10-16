@@ -10,7 +10,6 @@
 @license      MIT
 @preprocessor default
 ==/UserStyle== */
-
 @-moz-document domain("feedly.com") {
   .widget-related-feeds {
     display: none;
@@ -31,5 +30,13 @@
     > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only
     article {
     max-width: 100%;
+  }
+
+  button[title="Create Team Newsletter"] {
+    display: none;
+  }
+
+  button[title="Create Team Newsletter"] + button {
+    display: none;
   }
 }
