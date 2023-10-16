@@ -557,8 +557,8 @@ class Parser {
         const watchedStatus = await this.parseWatched();
         const favoritesStatus = await this.parseFavorites();
 
-        statuses = statuses.merge(watchedStatus);
         statuses = statuses.merge(favoritesStatus);
+        statuses = statuses.merge(watchedStatus);
 
         return statuses;
     }
