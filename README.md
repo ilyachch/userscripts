@@ -4,7 +4,7 @@
 <!-- start_scripts_links -->
 * [Better Opennet script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/opennet_hide_comments/opennet_hide_comments.user.js) - 0.1.1
 * [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.1
-* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.0.0
+* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.0.1
 * [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.1.6
 * [Obsidian Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/obsidian_markdown_tools/obsidian_markdown_tools.user.js) - 0.1.1
 * [Pikabu tabs](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js) - 0.0.1
@@ -23,10 +23,10 @@
 * [acomics style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/acomics/acomics.user.css) - 0.0.1
 * [adme style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/adme/adme.user.css) - 0.0.2
 * [dcealopez style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/dcealopez/dcealopez.user.css) - 0.0.1
-* [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.1
+* [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.2
 * [free-freecell-solitair style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecell_solitair/free_freecell_solitair.user.css) - 0.0.1
 * [free-play-sudoku style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_play_sudoku/free_play_sudoku.user.css) - 0.0.1
-* [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.1
+* [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.2
 * [kinopoisk style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/kinopoisk/kinopoisk.user.css) - 0.0.1
 * [rezka style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rezka/rezka.user.css) - 0.2.0
 * [rollbar style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rollbar/rollbar.user.css) - 0.0.1
