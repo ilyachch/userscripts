@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Obsidian Markdown tools script
 // @namespace    ilyachch/userscripts
-// @version      0.0.1
+// @version      0.1.1
 // @description  Tools to work with pages and Obsidian
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -11,55 +11,42 @@
 // @downloadURL  https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/obsidian_markdown_tools/obsidian_markdown_tools.user.js
 // @license      MIT
 
+// @grant        GM_addStyle
 // @run-at       document-end
 // @match        *://*/*
 // ==/UserScript==
 
-class Styles {
-    constructor(id, itemClass) {
-        this.id = id;
-        this.itemClass = itemClass;
-        this.create();
-    }
-
-    create() {
-        const css = `
-            #${this.id} {
-                position: fixed;
-                z-index: 9999;
-                bottom: 0;
-                right: 0;
-                padding: 0;
-                background-color: transparent;
-            }
-            #${this.id} .${this.itemClass} {
-                font-family: monospace;
-                font-size: 14px;
-                padding: 10px;
-                margin: 10px;
-                border: 1px solid #444;
-                border-radius: 5px;
-                background-color: #222;
-                color: #fff;
-                cursor: pointer;
-                text-decoration: none;
-                text-transform: uppercase;
-                line-height: 1;
-                font-weight: normal;
-            }
-            #${this.id} .${this.itemClass}:hover {
-                background-color: #333;
-            }
-            #${this.id} .${this.itemClass}:active {
-                background-color: #000;
-            }
-        `;
-
-        const style = document.createElement("style");
-        style.innerHTML = css;
-        document.head.appendChild(style);
-    }
+const STYLE = `
+#markdown-tools-menu {
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    right: 0;
+    padding: 0;
+    background-color: transparent;
 }
+#markdown-tools-menu .markdown-tools-menu-item {
+    font-family: monospace;
+    font-size: 14px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #222;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    line-height: 1;
+    font-weight: normal;
+}
+#markdown-tools-menu .markdown-tools-menu-item:hover {
+    background-color: #333;
+}
+#markdown-tools-menu .markdown-tools-menu-item:active {
+    background-color: #000;
+}
+`;
 
 class MenuItem {
     constructor(itemClass, text, callback) {
@@ -105,8 +92,7 @@ class Menu {
 
     const MENU_ID = "markdown-tools-menu";
     const MENU_ITEM_CLASS = "markdown-tools-menu-item";
-
-    new Styles(MENU_ID, MENU_ITEM_CLASS);
+    GM_addStyle(STYLE);
 
     const cleanURL = (url) => {
         const urlObject = new URL(url);
@@ -131,7 +117,11 @@ class Menu {
 
     document.addEventListener("keydown", (event) => {
         if (event.ctrlKey && event.shiftKey && event.key === "S") {
-            menu.toggleVisibility();
+            if (document.getElementById(MENU_ID)) {
+                document.getElementById(MENU_ID).remove();
+            } else {
+                menu.toggleVisibility();
+            }
         }
     });
 })();

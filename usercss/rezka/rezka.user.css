@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         rezka style
 @namespace    ilyachch/userscripts/styles
-@version      0.1.6
+@version      0.2.0
 @description  Custom CSS - rezka
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -85,23 +85,6 @@ url-prefix("https://hdrezka.me/")
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
-  }
-  .b-content__inline_item.in-progress .b-content__inline_item-cover::before,
-  .b-content__inline_item.watched .b-content__inline_item-cover::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    line-height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .b-content__inline_item.in-progress .b-content__inline_item-cover::before {
-    box-shadow: inset 0px 0px 20px 10px #f0e68c;
-  }
-  .b-content__inline_item.watched .b-content__inline_item-cover::before {
-    box-shadow: inset 0px 0px 20px 10px #90ee90;
   }
   .b-navigation {
     flex: 0 0 100%;

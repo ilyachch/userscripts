@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         tprogger style
 @namespace    ilyachch/userscripts/styles
-@version      0.0.1
+@version      1.0.0
 @description  Custom CSS - tprogger
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -13,6 +13,22 @@
 
 @-moz-document domain("tproger.ru") {
   .float-widget-container {
+    display: none !important;
+  }
+
+  .tp-layout-default__listok-container {
+    display: none !important;
+  }
+
+  .tp-layout-default__listok-top-container {
+    display: none !important;
+  }
+
+  .tp-listok-pop-up {
+    display: none !important;
+  }
+
+  .tp-post-page__container-listok-end-content {
     display: none !important;
   }
 }
