@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      2.0.0
+// @version      2.0.1
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -557,8 +557,8 @@ class Parser {
         const watchedStatus = await this.parseWatched();
         const favoritesStatus = await this.parseFavorites();
 
-        statuses = statuses.merge(favoritesStatus);
         statuses = statuses.merge(watchedStatus);
+        statuses = statuses.merge(favoritesStatus);
 
         return statuses;
     }
