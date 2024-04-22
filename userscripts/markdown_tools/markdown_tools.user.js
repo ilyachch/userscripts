@@ -100,7 +100,9 @@ class MarkdownToolsMenu {
     static init() {
         document.addEventListener("keydown", (event) => {
             if (event.ctrlKey && event.shiftKey && event.key === "S") {
-                let menuElement = document.getElementById(MarkdownToolsMenu.elementId);
+                let menuElement = document.getElementById(
+                    MarkdownToolsMenu.elementId,
+                );
 
                 if (menuElement === null) {
                     menuElement = MarkdownToolsMenu.create();
