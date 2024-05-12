@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         youtube style
 @namespace    ilyachch/userscripts/styles
-@version      0.2.0
+@version      0.2.1
 @description  Custom CSS - youtube
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -61,5 +61,9 @@
 
   ytd-live-chat-frame {
     display: none !important;
+  }
+
+  #top-row {
+    display: grid;
   }
 }
