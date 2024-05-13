@@ -64,6 +64,6 @@
   }
 
   #top-row {
-    display: grid;
+    display: grid !important;
   }
 }
