@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Youtube script
 // @namespace    ilyachch/userscripts
-// @version      0.0.1
+// @version      0.0.2
 // @description  Custom Script - Better Youtube
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -21,22 +21,22 @@
 
 const STYLE = `
 #contents ytd-item-section-renderer:has(video)  {
-    display: none !important;
 }
 `;
 
 function stopVideoOnChannelPage() {
     function stopVideoOnChannelPage() {
-        const channelHeader = document.querySelector(
-            ".page-header-banner-image",
+        const pageIsChannelHome = document.querySelector(
+            "ytd-item-section-renderer"
         );
         const video = document.querySelector(
-            "#contents ytd-item-section-renderer video",
+            "#contents ytd-item-section-renderer video"
         );
+
         const videoWrapper = document.querySelector(".html5-video-player");
 
-        if (channelHeader && video) {
-            videoWrapper.pauseVideo();
+        if (pageIsChannelHome && video) {
+            const q = videoWrapper.pauseVideo();
         }
     }
 
@@ -51,7 +51,7 @@ function stopVideoOnChannelPage() {
                     clearInterval(interval);
                 }
             },
-            { once: true },
+            { once: true }
         );
         document.addEventListener(
             "keydown",
@@ -60,7 +60,7 @@ function stopVideoOnChannelPage() {
                     clearInterval(interval);
                 }
             },
-            { once: true },
+            { once: true }
         );
     }
 

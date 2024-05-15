@@ -3,7 +3,7 @@
 # Scripts
 <!-- start_scripts_links -->
 * [Better Opennet script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_opennet/better_opennet.user.js) - 0.2.0
-* [Better Youtube script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_youtube/better_youtube.user.js) - 0.0.1
+* [Better Youtube script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_youtube/better_youtube.user.js) - 0.0.2
 * [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.1
 * [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.0.1
 * [Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/markdown_tools/markdown_tools.user.js) - 0.2.0
