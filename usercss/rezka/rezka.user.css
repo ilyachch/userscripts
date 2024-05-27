@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         rezka style
 @namespace    ilyachch/userscripts/styles
-@version      0.2.0
+@version      0.3.0
 @description  Custom CSS - rezka
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -18,20 +18,21 @@ url-prefix("https://hdrezka.me/")
   body {
     min-width: auto;
   }
-  .glory {
-    display: none;
-  }
+
   #main {
     padding-bottom: 0px !important;
   }
 
-  #footer {
-    margin: 0 !important;
+  #wrapper {
+    width: initial !important;
   }
 
   .b-wrapper {
-    width: initial;
+    width: auto;
+    margin: 0 10px;
+    padding: 0 10px;
   }
+
   .b-wrapper > .b-content__description {
     display: none;
   }
@@ -95,14 +96,6 @@ url-prefix("https://hdrezka.me/")
   .b-content__inline_inner_main,
   .b-content__inline_inner_mainprobar {
     padding: 0;
-  }
-
-  #addcomment-title,
-  #comments-form,
-  #hd-comments-navigation,
-  #hd-comments-list,
-  #vk_groups {
-    display: none;
   }
 
   .b-content__main > div {
@@ -208,5 +201,25 @@ url-prefix("https://hdrezka.me/")
   }
   .b-newest_slider .cntrl {
     display: none !important;
+  }
+
+  /* footer */
+  #footer {
+    margin: 0 !important;
+    width: auto !important;
+  }
+
+  /* different blocks */
+  .glory,
+  .b-dwnapp {
+    display: none;
+  }
+
+  #addcomment-title,
+  #comments-form,
+  #hd-comments-navigation,
+  #hd-comments-list,
+  #vk_groups {
+    display: none;
   }
 }
