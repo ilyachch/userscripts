@@ -34,7 +34,7 @@
 * [seasonvar style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/seasonvar/seasonvar.user.css) - 1.1.0
 * [tprogger style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/tprogger/tprogger.user.css) - 1.0.0
 * [whatsapp style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/whatsapp/whatsapp.user.css) - 0.0.1
-* [youtube style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/youtube/youtube.user.css) - 0.2.1
+* [youtube style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/youtube/youtube.user.css) - 0.3.0
 <!-- end_styles_links -->
 
 ## Usefull links
