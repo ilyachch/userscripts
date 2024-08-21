@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Markdown tools script
 // @namespace    ilyachch/userscripts
-// @version      0.2.0
+// @version      0.3.0
 // @description  Tools to work with pages and Obsidian
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -23,14 +23,23 @@ const STYLE = `
     z-index: 9999;
     bottom: 0;
     right: 0;
-    padding: 0;
+    margin: 10px;
     background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
 }
+
+#markdown-tools-menu.hidden {
+    display: none;
+}
+
 #markdown-tools-menu .markdown-tools-menu-item {
     font-family: monospace;
     font-size: 14px;
     padding: 10px;
-    margin: 10px;
+    margin: 0;
     border: 1px solid #444;
     border-radius: 5px;
     background-color: #222;
@@ -41,9 +50,11 @@ const STYLE = `
     line-height: 1;
     font-weight: normal;
 }
+
 #markdown-tools-menu .markdown-tools-menu-item:hover {
     background-color: #333;
 }
+
 #markdown-tools-menu .markdown-tools-menu-item:active {
     background-color: #000;
 }
@@ -63,6 +74,10 @@ class MenuOption {
         menuItem.innerText = this.label;
         menuItem.addEventListener("click", this.doAction);
         return menuItem;
+    }
+
+    static show() {
+        return true;
     }
 
     doAction() {
@@ -92,16 +107,75 @@ class CopyLinkInMarkdownFormatMenuOption extends MenuOption {
     }
 }
 
+class CopyYoutubeLinkInMarkdownFormatMenuOption extends MenuOption {
+    static label = "Copy Youtube link in Markdown format";
+
+    constructor() {
+        super();
+        this.className = MenuOption.className;
+        this.label = CopyYoutubeLinkInMarkdownFormatMenuOption.label;
+    }
+
+    static show() {
+        const urlObject = new URL(window.location.href);
+        return urlObject.hostname === "www.youtube.com";
+    }
+
+    doAction() {
+        const urlObject = new URL(window.location.href);
+
+        Array.from(urlObject.searchParams.keys())
+            .filter(
+                (param) =>
+                    param.startsWith("utm_") ||
+                    param === "list" ||
+                    param === "index" ||
+                    param === "t"
+            )
+            .forEach((param) => urlObject.searchParams.delete(param));
+        const currentPageUrl = urlObject.toString();
+
+        let documentTitle = document.title;
+        if (documentTitle.includes(" - YouTube")) {
+            documentTitle = documentTitle.replace(" - YouTube", "");
+        }
+        documentTitle = documentTitle.replace(/^\(\d+\)\s/, "");
+
+        const markdownLink = `[${documentTitle}](${currentPageUrl})`;
+
+        navigator.clipboard.writeText(markdownLink);
+    }
+}
+
+class HideMenuOption extends MenuOption {
+    static label = "❌";
+
+    constructor() {
+        super();
+        this.className = MenuOption.className;
+        this.label = HideMenuOption.label;
+    }
+
+    doAction() {
+        let menu_element = document.getElementById(MarkdownToolsMenu.elementId);
+        menu_element.toggleVisibility();
+    }
+}
+
 class MarkdownToolsMenu {
     static elementId = "markdown-tools-menu";
 
-    static menuOptions = [CopyLinkInMarkdownFormatMenuOption];
+    static menuOptions = [
+        CopyYoutubeLinkInMarkdownFormatMenuOption,
+        CopyLinkInMarkdownFormatMenuOption,
+        HideMenuOption,
+    ];
 
     static init() {
         document.addEventListener("keydown", (event) => {
             if (event.ctrlKey && event.shiftKey && event.key === "S") {
                 let menuElement = document.getElementById(
-                    MarkdownToolsMenu.elementId,
+                    MarkdownToolsMenu.elementId
                 );
 
                 if (menuElement === null) {
@@ -128,9 +202,11 @@ class MarkdownToolsMenu {
     createElement() {
         const menuElement = document.createElement("div");
         menuElement.id = this.elementId;
-        menuElement.style.display = "none";
-        console.log(this.menuOptions);
+        menuElement.classList.add("hidden");
         this.menuOptions.forEach((menuOption) => {
+            if (!menuOption.show()) {
+                return;
+            }
             const menuOptionItem = new menuOption();
             const menuOptionItemElement = menuOptionItem.createElement();
             menuElement.appendChild(menuOptionItemElement);
@@ -140,7 +216,7 @@ class MarkdownToolsMenu {
     }
 
     toggleVisibility() {
-        this.style.display = this.style.display === "none" ? "block" : "none";
+        this.classList.toggle("hidden");
     }
 }
 
