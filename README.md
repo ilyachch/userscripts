@@ -7,7 +7,7 @@
 * [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.1
 * [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.0.1
 * [Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/markdown_tools/markdown_tools.user.js) - 0.2.0
-* [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.1.6
+* [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.2.0
 * [Pikabu tabs](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/pikabu_tabs/pikabu_tabs.user.js) - 0.0.1
 <!-- end_scripts_links -->
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.1.6
+// @version      0.2.0
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -19,13 +19,9 @@
 
 const localStorageKey = "user_media_speed";
 
-const FONT_BLOCK = `
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-`;
-
 const STYLE = `
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 :root{
     --font-size: 20px;
     --font-family: 'Roboto Mono', monospace;
@@ -33,6 +29,10 @@ const STYLE = `
     --border-radius: 30px;
     --placement: 25px;
     --margin: 10px;
+    --background-color: #2e2f34;
+    --color: #ffffff;
+    --opacity: 0.1;
+    --active-opacity: 0.7;
 }
 
 .user_media_speed_control{
@@ -47,15 +47,17 @@ const STYLE = `
     z-index: 9999;
 
     border-radius: var(--border-radius);
-    background-color: #2e2f34;
-    color: #ffffff;
+    background-color: var(--background-color);
+    color: var(--color);
     user-select: none;
     overflow: hidden;
-    opacity: 0.1;
+    opacity: var(--opacity);
 }
+
 .user_media_speed_control:hover{
-    opacity: 0.7;
+    opacity: var(--active-opacity);
 }
+
 .user_media_speed_control_title, .user_media_speed_control_option{
     display: flex;
     margin: var(--margin);
@@ -79,6 +81,32 @@ const STYLE = `
 .user_media_speed_control_option.selected{
     font-weight: 600;
 }
+
+.user_media_speed_change_notification.hidden{
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.user_media_speed_change_notification{
+    border-radius: var(--border-radius);
+    opacity: var(--active-opacity);
+    background-color: var(--background-color);
+    color: var(--color);
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: var(--placement);
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+    line-height: var(--size);
+    width: 40px;
+    height: 40px;
+    transition: opacity 0.1s;
+}
 `;
 
 const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
@@ -99,12 +127,11 @@ const LARGE_VIDEO_STEP = 90;
             create_speed_control_element();
             set_selected_speed_option_active(speed);
         },
-        true,
+        true
     );
 
     document.addEventListener("DOMContentLoaded", function (event) {
         GM_addStyle(STYLE);
-        document.head.insertAdjacentHTML("beforeend", FONT_BLOCK);
         if (document.querySelectorAll("video, audio").length > 0) {
             create_speed_control_element();
         }
@@ -116,8 +143,9 @@ const LARGE_VIDEO_STEP = 90;
             let speed = event.detail.speed;
             set_playback_speed(speed);
             set_selected_speed_option_active(speed);
+            show_notification(speed);
         },
-        true,
+        true
     );
 
     document.addEventListener("keydown", function (event) {
@@ -144,6 +172,24 @@ const LARGE_VIDEO_STEP = 90;
             }
         }
     });
+
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.ctrlKey &&
+            event.altKey &&
+            event.code === "Period" &&
+            currentPlayingElement
+        ) {
+            increase_speed();
+        } else if (
+            event.ctrlKey &&
+            event.altKey &&
+            event.code === "Comma" &&
+            currentPlayingElement
+        ) {
+            decrease_speed();
+        }
+    });
 })();
 
 function set_selected_speed_option_active(speed) {
@@ -154,7 +200,7 @@ function set_selected_speed_option_active(speed) {
         });
     document
         .querySelector(
-            `.user_media_speed_control_option[data-speed="${speed}"]`,
+            `.user_media_speed_control_option[data-speed="${speed}"]`
         )
         .classList.add("selected");
     document.querySelector(".user_media_speed_control_title").innerText = speed;
@@ -208,11 +254,59 @@ function create_speed_control_element() {
                         speed: speed,
                         source: speed_option,
                     },
-                }),
+                })
             );
         });
         speed_control.appendChild(speed_option);
     }
 
     document.body.appendChild(speed_control);
+}
+
+function increase_speed() {
+    let current_speed = get_playback_speed();
+    let new_speed = SPEED_OPTIONS.find((speed) => speed > current_speed);
+    document.dispatchEvent(
+        new CustomEvent("MediaPlaybackSpeedChanged", {
+            detail: {
+                speed: new_speed,
+            },
+        })
+    );
+}
+
+function decrease_speed() {
+    let current_speed = get_playback_speed();
+    let new_speed = SPEED_OPTIONS.slice()
+        .reverse()
+        .find((speed) => speed < current_speed);
+    document.dispatchEvent(
+        new CustomEvent("MediaPlaybackSpeedChanged", {
+            detail: {
+                speed: new_speed,
+            },
+        })
+    );
+}
+
+function show_notification(new_speed) {
+    if (document.querySelector(".user_media_speed_change_notification")) {
+        document
+            .querySelector(".user_media_speed_change_notification")
+            .remove();
+    }
+    let notification = document.createElement("div");
+    notification.classList.add("user_media_speed_change_notification");
+    notification.classList.add("hidden");
+    let notification_text = document.createElement("p");
+    notification_text.innerText = `x${new_speed}`;
+    notification.appendChild(notification_text);
+    document.body.appendChild(notification);
+    notification.classList.remove("hidden");
+    setTimeout(() => {
+        notification.classList.add("hidden");
+        setTimeout(() => {
+            notification.remove();
+        }, 100);
+    }, 2000);
 }
