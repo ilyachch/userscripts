@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Markdown tools script
 // @namespace    ilyachch/userscripts
-// @version      0.3.0
+// @version      0.4.0
 // @description  Tools to work with pages and Obsidian
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -60,6 +60,48 @@ const STYLE = `
 }
 `;
 
+function removeGetParams(url, params) {
+    // if url is not string - raise error
+    if (typeof url !== "string") {
+        throw new Error("url should be a string");
+    }
+
+    let urlObject = new URL(url);
+
+    let getKeys = Array.from(urlObject.searchParams.keys());
+
+    let paramsToRemove = [];
+
+    for (let param of params) {
+        // if param is *, remove all params
+        // if param ends with *, remove all params that start with it
+        // if param starts with *, remove all params that end with it
+        // if param starts and ends with *, remove all params that contain it
+        // else if param is in getKeys, remove it
+        if (param === "*") {
+            paramsToRemove.push(...getKeys);
+        } else if (param.endsWith("*")) {
+            paramsToRemove.push(
+                ...getKeys.filter((key) => key.startsWith(param.slice(0, -1)))
+            );
+        } else if (param.startsWith("*")) {
+            paramsToRemove.push(
+                ...getKeys.filter((key) => key.endsWith(param.slice(1)))
+            );
+        } else if (param.startsWith("*") && param.endsWith("*")) {
+            paramsToRemove.push(
+                ...getKeys.filter((key) => key.includes(param.slice(1, -1)))
+            );
+        } else if (getKeys.includes(param)) {
+            paramsToRemove.push(param);
+        }
+    }
+
+    paramsToRemove.forEach((param) => urlObject.searchParams.delete(param));
+
+    return urlObject.toString();
+}
+
 class MenuOption {
     static className = "markdown-tools-menu-item";
 
@@ -95,11 +137,7 @@ class CopyLinkInMarkdownFormatMenuOption extends MenuOption {
     }
 
     doAction() {
-        const urlObject = new URL(window.location.href);
-        Array.from(urlObject.searchParams.keys())
-            .filter((param) => param.startsWith("utm_"))
-            .forEach((param) => urlObject.searchParams.delete(param));
-        const currentPageUrl = urlObject.toString();
+        const clearPageUrl = removeGetParams(window.location.href, ["utm_*"]);
 
         const markdownLink = `[${document.title}](${currentPageUrl})`;
 
@@ -124,16 +162,20 @@ class CopyYoutubeLinkInMarkdownFormatMenuOption extends MenuOption {
     doAction() {
         const urlObject = new URL(window.location.href);
 
-        Array.from(urlObject.searchParams.keys())
-            .filter(
-                (param) =>
-                    param.startsWith("utm_") ||
-                    param === "list" ||
-                    param === "index" ||
-                    param === "t"
-            )
-            .forEach((param) => urlObject.searchParams.delete(param));
-        const currentPageUrl = urlObject.toString();
+        let paramsToRemove = ["utm_*"];
+
+        if (urlObject.pathname === "/watch") {
+            paramsToRemove.push(...["list", "index", "t"]);
+        } else if (urlObject.pathname === "/playlist") {
+            paramsToRemove.push(...["t", "index"]);
+        }
+
+        console.log(paramsToRemove);
+
+        const cleanPageUrl = removeGetParams(
+            window.location.href,
+            paramsToRemove
+        );
 
         let documentTitle = document.title;
         if (documentTitle.includes(" - YouTube")) {
@@ -141,7 +183,7 @@ class CopyYoutubeLinkInMarkdownFormatMenuOption extends MenuOption {
         }
         documentTitle = documentTitle.replace(/^\(\d+\)\s/, "");
 
-        const markdownLink = `[${documentTitle}](${currentPageUrl})`;
+        const markdownLink = `[${documentTitle}](${cleanPageUrl})`;
 
         navigator.clipboard.writeText(markdownLink);
     }
@@ -172,17 +214,28 @@ class MarkdownToolsMenu {
     ];
 
     static init() {
+        function showOnKeyPress() {
+            let menuElement = document.getElementById(
+                MarkdownToolsMenu.elementId
+            );
+
+            if (menuElement === null) {
+                menuElement = MarkdownToolsMenu.create();
+            }
+
+            menuElement.toggleVisibility();
+        }
+
         document.addEventListener("keydown", (event) => {
-            if (event.ctrlKey && event.shiftKey && event.key === "S") {
-                let menuElement = document.getElementById(
-                    MarkdownToolsMenu.elementId
-                );
-
-                if (menuElement === null) {
-                    menuElement = MarkdownToolsMenu.create();
-                }
-
-                menuElement.toggleVisibility();
+            if (
+                navigator.userAgent.indexOf("Mac OS") != -1 &&
+                event.metaKey &&
+                event.shiftKey &&
+                event.key === "S"
+            ) {
+                showOnKeyPress();
+            } else if (event.ctrlKey && event.shiftKey && event.key === "S") {
+                showOnKeyPress();
             }
         });
     }

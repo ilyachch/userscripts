@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -92,10 +92,10 @@ const STYLE = `
     opacity: var(--active-opacity);
     background-color: var(--background-color);
     color: var(--color);
-    position: fixed;
+    position: fixed !important;
     top: 25%;
     left: 50%;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -106,6 +106,7 @@ const STYLE = `
     width: 40px;
     height: 40px;
     transition: opacity 0.1s;
+    z-index: 9999 !important;
 }
 `;
 

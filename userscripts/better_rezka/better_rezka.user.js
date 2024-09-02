@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      2.0.1
+// @version      2.1.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -43,6 +43,14 @@ const STYLE = `
 .b-content__inline_item.to-watch .b-content__inline_item-cover::before {
   box-shadow: inset 0px 0px 20px 10px #90b1ee;
 }
+
+.b-content__inline_item .ratings {
+    border: 1px solid #ccc;
+    padding: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 `;
 
 function auto_next_episode() {
@@ -53,7 +61,7 @@ function auto_next_episode() {
         mutations.forEach((mutation) => {
             if (mutation.type === "childList") {
                 const nextEpisodeLoader = document.querySelector(
-                    ".b-player__next_episode_loader",
+                    ".b-player__next_episode_loader"
                 );
                 if (nextEpisodeLoader) {
                     setTimeout(() => {
@@ -90,11 +98,11 @@ function add_year_links() {
 
     const next_year_link = make_link(
         window.location.pathname.replace(/\d{4}\/.*/, `${next_year}/`),
-        `${next_year}`,
+        `${next_year}`
     );
     const prev_year_link = make_link(
         window.location.pathname.replace(/\d{4}\/.*/, `${prev_year}/`),
-        `${prev_year}`,
+        `${prev_year}`
     );
 
     header.appendChild(prev_year_link);
@@ -107,13 +115,13 @@ function remove_duplicates_from_newest() {
     const stack_size = 8;
 
     let newest_slider_content = document.querySelector(
-        "#newest-slider-content",
+        "#newest-slider-content"
     );
     if (!newest_slider_content) {
         return;
     }
     let newest_elements = document.querySelectorAll(
-        "#newest-slider-content .b-content__inline_item",
+        "#newest-slider-content .b-content__inline_item"
     );
     if (!newest_elements) {
         return;
@@ -178,7 +186,7 @@ function remove_duplicates_from_newest() {
 
 function watch_newest_slider_content_block_changes() {
     const newest_slider_content = document.querySelector(
-        "#newest-slider-content",
+        "#newest-slider-content"
     );
     if (!newest_slider_content) {
         return;
@@ -221,7 +229,7 @@ function remove_confirmation_request_before_mark_as_watched() {
         xhr.open("POST", url, true);
         xhr.setRequestHeader(
             "Content-Type",
-            "application/x-www-form-urlencoded",
+            "application/x-www-form-urlencoded"
         );
         xhr.send(data);
 
@@ -244,11 +252,11 @@ function remove_confirmation_request_before_mark_as_watched() {
         new_button.setAttribute("data-id", button.getAttribute("data-id"));
         new_button.setAttribute(
             "data-text-watch",
-            button.getAttribute("data-text-watch"),
+            button.getAttribute("data-text-watch")
         );
         new_button.setAttribute(
             "data-text-unwatch",
-            button.getAttribute("data-text-unwatch"),
+            button.getAttribute("data-text-unwatch")
         );
         new_button.style.border = "none";
         new_button.style.backgroundColor = "transparent";
@@ -269,7 +277,7 @@ function remove_confirmation_request_before_mark_as_watched() {
         xhr.open("POST", url, true);
         xhr.setRequestHeader(
             "Content-Type",
-            "application/x-www-form-urlencoded",
+            "application/x-www-form-urlencoded"
         );
         xhr.send(data);
 
@@ -336,7 +344,7 @@ class VideoStatus {
     removeFromList(listName, videoName) {
         if (this.hasOwnProperty(listName)) {
             this[listName] = this[listName].filter(
-                (item) => item !== videoName,
+                (item) => item !== videoName
             );
         } else {
             console.error("Invalid list name");
@@ -482,7 +490,7 @@ class Parser {
         let videoStatus = new VideoStatus();
 
         const items = continue_block.querySelectorAll(
-            ".b-videosaves__list_item",
+            ".b-videosaves__list_item"
         );
         for (const item of items) {
             if (!item.getAttribute("id")) {
@@ -501,20 +509,27 @@ class Parser {
     }
 
     async fetchFavoritesByCategory(categoryURL) {
-        const response = await fetch(categoryURL);
-        if (!response.ok) {
-            throw new Error(
-                `Failed to fetch folder ${categoryURL}: ${response.statusText}`,
-            );
+        const videoElements = [];
+        let page = 1;
+        while (true) {
+            const response = await fetch(`${categoryURL}page/${page}/`);
+            if (!response.ok) {
+                break;
+                throw new Error(
+                    `Failed to fetch folder ${categoryURL}: ${response.statusText}`
+                );
+            }
+            let htmlText = await response.text();
+            let doc = this.parser.parseFromString(htmlText, "text/html");
+            let elements = doc.querySelectorAll(".b-content__inline_item");
+            if (elements.length === 0) {
+                break;
+            }
+            videoElements.push(...elements);
+            page++;
         }
-
-        const htmlText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, "text/html");
-
-        const videoElements = doc.querySelectorAll(".b-content__inline_item");
         const videoIds = [...videoElements].map((el) =>
-            el.getAttribute("data-id"),
+            el.getAttribute("data-id")
         );
 
         return videoIds;
@@ -525,7 +540,7 @@ class Parser {
         const response = await fetch(baseUrl);
         if (!response.ok) {
             throw new Error(
-                `Failed to fetch favourites ${baseUrl}: ${response.statusText}`,
+                `Failed to fetch favourites ${baseUrl}: ${response.statusText}`
             );
         }
 
@@ -534,7 +549,7 @@ class Parser {
         const doc = parser.parseFromString(htmlText, "text/html");
 
         const categoryLinks = doc.querySelectorAll(
-            ".b-favorites_content__cats_list_link",
+            ".b-favorites_content__cats_list_link"
         );
 
         const videoStatus = new VideoStatus();
@@ -618,7 +633,7 @@ class Marker {
             ["watched", "in_progress", "to_watch", "dropped"].forEach(
                 (status) => {
                     item.classList.remove(status);
-                },
+                }
             );
 
             if (videoStatus.watched.includes(id)) {
@@ -630,6 +645,106 @@ class Marker {
             } else if (videoStatus.dropped.includes(id)) {
                 item.classList.add("dropped");
             }
+        });
+    }
+}
+
+class RatingData {
+    constructor(rating_element, source) {
+        this.rating_str = rating_element ? rating_element.innerText : null;
+        this.source = source;
+        this.ratingValue = this.rating_str ? parseFloat(this.rating_str) : null;
+    }
+
+    asString() {
+        if (this.ratingValue === null) {
+            return `<span title="${this.source}">-</span>`;
+        }
+        if (this.ratingValue < 6) {
+            return `<span title="${this.source}" style="color: red;">${this.rating_str}</span>`;
+        } else if (this.ratingValue >= 6 && this.ratingValue < 7) {
+            return `<span title="${this.source}">${this.rating_str}</span>`;
+        } else if (this.ratingValue >= 7) {
+            return `<span title="${this.source}" style="color: green;">${this.rating_str}</span>`;
+        }
+    }
+}
+
+class RatingMarker {
+    constructor() {
+        this.parser = new DOMParser();
+    }
+
+    async addRatingsBlock(element) {
+        if (element.querySelector(".ratings")) {
+            return;
+        }
+        let elementDataId = element.getAttribute("data-id");
+        fetch("https://rezka.ag/engine/ajax/quick_content.php", {
+            method: "POST",
+            headers: {
+                "Content-Type":
+                    "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+            body: `id=${elementDataId}`,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                        `${response.status}: ${response.statusText}`
+                    );
+                }
+                return response.text();
+            })
+            .then((resposnse_text) => {
+                let doc = this.parser.parseFromString(
+                    resposnse_text,
+                    "text/html"
+                );
+                let ratings = [
+                    new RatingData(
+                        doc.querySelector(".b-content__bubble_rating b"),
+                        "Rezka"
+                    ),
+                    new RatingData(
+                        doc.querySelector(".b-content__bubble_rates .kp b"),
+                        "КиноПоиск"
+                    ),
+                    new RatingData(
+                        doc.querySelector(".b-content__bubble_rates .imdb b"),
+                        "IMDb"
+                    ),
+                ];
+
+                let ratingDiv = document.createElement("div");
+                ratingDiv.classList.add("ratings");
+                ratings.forEach((rating) => {
+                    let ratingBlock = document.createElement("div");
+                    ratingBlock.innerHTML = rating.asString();
+                    ratingDiv.appendChild(ratingBlock);
+                });
+                element
+                    .querySelector(".b-content__inline_item-cover")
+                    .after(ratingDiv);
+            });
+    }
+
+    markRating() {
+        const elementsToMark = document.querySelectorAll(
+            ".b-content__inline_item"
+        );
+
+        elementsToMark.forEach((element) => {
+            let timer;
+            element.addEventListener("mouseenter", () => {
+                timer = setTimeout(() => {
+                    this.addRatingsBlock(element);
+                }, 500);
+            });
+
+            element.addEventListener("mouseleave", () => {
+                clearTimeout(timer);
+            });
         });
     }
 }
@@ -649,4 +764,7 @@ class Marker {
     parser.parseAndSaveMarks();
     marker.markVideosWithStatuses();
     watch_newest_slider_content_block_changes();
+
+    const rating_marker = new RatingMarker();
+    rating_marker.markRating();
 })();
