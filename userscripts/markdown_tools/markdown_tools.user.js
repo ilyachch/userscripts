@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Markdown tools script
 // @namespace    ilyachch/userscripts
-// @version      0.4.0
+// @version      0.4.1
 // @description  Tools to work with pages and Obsidian
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -139,7 +139,7 @@ class CopyLinkInMarkdownFormatMenuOption extends MenuOption {
     doAction() {
         const clearPageUrl = removeGetParams(window.location.href, ["utm_*"]);
 
-        const markdownLink = `[${document.title}](${currentPageUrl})`;
+        const markdownLink = `[${document.title}](${clearPageUrl})`;
 
         navigator.clipboard.writeText(markdownLink);
     }
