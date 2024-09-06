@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name         feedly style
 @namespace    ilyachch/userscripts/styles
-@version      0.0.3
+@version      0.0.4
 @description  Custom CSS - feedly
 @author       ilyachch (https://github.com/ilyachch/userscripts)
 @homepageURL  https://github.com/ilyachch/userscripts
@@ -32,15 +32,24 @@
     max-width: 100%;
   }
 
-  .MagazineLayout{
+  .StreamPage
+    > .row
+    > .col-xs-12.col-md-12.col-lg-12.col-xl-9.col-xl-9-xlarge-only
+    article
+    > .SelectedEntryScroller
+    > div {
+    max-width: 100%;
+  }
+
+  .MagazineLayout {
     max-width: none;
   }
 
-  div > button[aria-label="Toggle AI Actions Panel"]{
+  div > button[aria-label="Toggle AI Actions Panel"] {
     display: none;
   }
 
-  button[aria-label="Create AI Feed"]{
+  button[aria-label="Create AI Feed"] {
     display: none;
   }
 

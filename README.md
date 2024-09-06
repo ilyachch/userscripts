@@ -4,7 +4,7 @@
 <!-- start_scripts_links -->
 * [Better Opennet script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_opennet/better_opennet.user.js) - 0.2.0
 * [Better Youtube script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_youtube/better_youtube.user.js) - 0.0.2
-* [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.1
+* [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.2
 * [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.1.0
 * [Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/markdown_tools/markdown_tools.user.js) - 0.4.1
 * [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.2.1
@@ -24,7 +24,7 @@
 * [acomics style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/acomics/acomics.user.css) - 0.0.1
 * [adme style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/adme/adme.user.css) - 0.0.2
 * [dcealopez style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/dcealopez/dcealopez.user.css) - 0.0.1
-* [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.3
+* [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.4
 * [free-freecell-solitair style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecell_solitair/free_freecell_solitair.user.css) - 0.0.1
 * [free-play-sudoku style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_play_sudoku/free_play_sudoku.user.css) - 0.0.1
 * [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.2
