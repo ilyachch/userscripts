@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Markdown tools script
 // @namespace    ilyachch/userscripts
-// @version      0.4.1
+// @version      0.4.2
 // @description  Tools to work with pages and Obsidian
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -178,9 +178,6 @@ class CopyYoutubeLinkInMarkdownFormatMenuOption extends MenuOption {
         );
 
         let documentTitle = document.title;
-        if (documentTitle.includes(" - YouTube")) {
-            documentTitle = documentTitle.replace(" - YouTube", "");
-        }
         documentTitle = documentTitle.replace(/^\(\d+\)\s/, "");
 
         const markdownLink = `[${documentTitle}](${cleanPageUrl})`;

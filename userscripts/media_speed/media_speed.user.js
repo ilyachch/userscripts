@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.2.1
+// @version      0.2.2
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -110,7 +110,7 @@ const STYLE = `
 }
 `;
 
-const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 2.5, 3, 5, 10];
+const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 3, 4, 5, 10];
 const DEFAULT_VIDEO_STEP = 5;
 const MEDIUM_VIDEO_STEP = 30;
 const LARGE_VIDEO_STEP = 90;
