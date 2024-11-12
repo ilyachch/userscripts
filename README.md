@@ -27,7 +27,7 @@
 * [feedly style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/feedly/feedly.user.css) - 0.0.4
 * [free-freecell-solitair style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_freecell_solitair/free_freecell_solitair.user.css) - 0.0.1
 * [free-play-sudoku style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/free_play_sudoku/free_play_sudoku.user.css) - 0.0.1
-* [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.2
+* [github style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/github/github.user.css) - 0.0.3
 * [kinopoisk style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/kinopoisk/kinopoisk.user.css) - 0.0.1
 * [rezka style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rezka/rezka.user.css) - 0.3.0
 * [rollbar style](https://raw.githubusercontent.com/ilyachch/userscripts/main/usercss/rollbar/rollbar.user.css) - 0.0.1
