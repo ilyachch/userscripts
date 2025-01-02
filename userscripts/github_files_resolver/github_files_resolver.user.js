@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github files resolver script
 // @namespace    ilyachch/userscripts
-// @version      0.0.1
+// @version      0.1.0
 // @description  Mark files as viewed by path on Github PR page
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -12,7 +12,7 @@
 // @license      MIT
 
 // @run-at       document-end
-// @match        https://github.com/*/pull/*/files
+// @match        https://github.com/*
 // @icon         https://github.githubassets.com/favicons/favicon.png
 // ==/UserScript==
 
@@ -71,8 +71,9 @@ document.head.appendChild(style);
                     const checkbox = item
                         .closest(".file-header")
                         .querySelector(".js-reviewed-checkbox");
-                    if (shouldCheck ? !checkbox.checked : checkbox.checked)
+                    if (shouldCheck ? !checkbox.checked : checkbox.checked) {
                         checkbox.click();
+                    }
                 }
             });
         };
@@ -84,7 +85,7 @@ document.head.appendChild(style);
         const uncheckAllButton = document.createElement("button");
         uncheckAllButton.innerText = "Uncheck All";
         uncheckAllButton.addEventListener("click", () =>
-            toggleCheckboxes(false),
+            toggleCheckboxes(false)
         );
 
         customElement.appendChild(input);
@@ -98,15 +99,27 @@ document.head.appendChild(style);
         document.getElementById(CUSTOM_ID).remove();
     }
 
-    const filesContainer = document.getElementById("files");
-    console.log(filesContainer);
-    if (filesContainer && filesContainer.classList.contains("diff-view")) {
-        if (!document.getElementById(CUSTOM_ID)) {
-            createCustomElement();
+    let timeoutId = null;
+    const observer = new MutationObserver(() => {
+        if (timeoutId !== null) {
+            clearTimeout(timeoutId);
         }
-    } else {
-        if (document.getElementById(CUSTOM_ID)) {
-            removeCustomElement();
-        }
-    }
+        timeoutId = setTimeout(() => {
+            const filesContainer = document.getElementById("files");
+            if (
+                filesContainer &&
+                filesContainer.classList.contains("diff-view")
+            ) {
+                if (!document.getElementById(CUSTOM_ID)) {
+                    createCustomElement();
+                }
+            } else {
+                if (document.getElementById(CUSTOM_ID)) {
+                    removeCustomElement();
+                }
+            }
+        }, 10);
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
 })();
