@@ -82,15 +82,15 @@ function removeGetParams(url, params) {
             paramsToRemove.push(...getKeys);
         } else if (param.endsWith("*")) {
             paramsToRemove.push(
-                ...getKeys.filter((key) => key.startsWith(param.slice(0, -1)))
+                ...getKeys.filter((key) => key.startsWith(param.slice(0, -1))),
             );
         } else if (param.startsWith("*")) {
             paramsToRemove.push(
-                ...getKeys.filter((key) => key.endsWith(param.slice(1)))
+                ...getKeys.filter((key) => key.endsWith(param.slice(1))),
             );
         } else if (param.startsWith("*") && param.endsWith("*")) {
             paramsToRemove.push(
-                ...getKeys.filter((key) => key.includes(param.slice(1, -1)))
+                ...getKeys.filter((key) => key.includes(param.slice(1, -1))),
             );
         } else if (getKeys.includes(param)) {
             paramsToRemove.push(param);
@@ -174,7 +174,7 @@ class CopyYoutubeLinkInMarkdownFormatMenuOption extends MenuOption {
 
         const cleanPageUrl = removeGetParams(
             window.location.href,
-            paramsToRemove
+            paramsToRemove,
         );
 
         let documentTitle = document.title;
@@ -213,7 +213,7 @@ class MarkdownToolsMenu {
     static init() {
         function showOnKeyPress() {
             let menuElement = document.getElementById(
-                MarkdownToolsMenu.elementId
+                MarkdownToolsMenu.elementId,
             );
 
             if (menuElement === null) {

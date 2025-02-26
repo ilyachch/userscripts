@@ -50,7 +50,8 @@
   }
 
   ytd-guide-section-renderer:has(a[href^="/feed/trending"]),
-  ytd-guide-section-renderer:has(a[href="https://studio.youtube.com/"]){
+  ytd-guide-section-renderer:has(a[href="https://studio.youtube.com/"])
+  {
     display: none !important;
   }
 
@@ -68,7 +69,7 @@
     display: grid !important;
   }
 
-  #sponsorBlockPopupContainer iframe{
+  #sponsorBlockPopupContainer iframe {
     width: 100%;
     margin-bottom: var(--ytd-margin-6x);
   }

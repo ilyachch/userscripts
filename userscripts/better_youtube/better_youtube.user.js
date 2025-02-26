@@ -27,10 +27,10 @@ const STYLE = `
 function stopVideoOnChannelPage() {
     function stopVideoOnChannelPage() {
         const pageIsChannelHome = document.querySelector(
-            "ytd-item-section-renderer"
+            "ytd-item-section-renderer",
         );
         const video = document.querySelector(
-            "#contents ytd-item-section-renderer video"
+            "#contents ytd-item-section-renderer video",
         );
 
         const videoWrapper = document.querySelector(".html5-video-player");
@@ -51,7 +51,7 @@ function stopVideoOnChannelPage() {
                     clearInterval(interval);
                 }
             },
-            { once: true }
+            { once: true },
         );
         document.addEventListener(
             "keydown",
@@ -60,7 +60,7 @@ function stopVideoOnChannelPage() {
                     clearInterval(interval);
                 }
             },
-            { once: true }
+            { once: true },
         );
     }
 

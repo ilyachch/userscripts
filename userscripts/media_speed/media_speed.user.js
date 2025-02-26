@@ -128,7 +128,7 @@ const LARGE_VIDEO_STEP = 90;
             create_speed_control_element();
             set_selected_speed_option_active(speed);
         },
-        true
+        true,
     );
 
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -146,7 +146,7 @@ const LARGE_VIDEO_STEP = 90;
             set_selected_speed_option_active(speed);
             show_notification(speed);
         },
-        true
+        true,
     );
 
     document.addEventListener("keydown", function (event) {
@@ -201,7 +201,7 @@ function set_selected_speed_option_active(speed) {
         });
     document
         .querySelector(
-            `.user_media_speed_control_option[data-speed="${speed}"]`
+            `.user_media_speed_control_option[data-speed="${speed}"]`,
         )
         .classList.add("selected");
     document.querySelector(".user_media_speed_control_title").innerText = speed;
@@ -255,7 +255,7 @@ function create_speed_control_element() {
                         speed: speed,
                         source: speed_option,
                     },
-                })
+                }),
             );
         });
         speed_control.appendChild(speed_option);
@@ -272,7 +272,7 @@ function increase_speed() {
             detail: {
                 speed: new_speed,
             },
-        })
+        }),
     );
 }
 
@@ -286,7 +286,7 @@ function decrease_speed() {
             detail: {
                 speed: new_speed,
             },
-        })
+        }),
     );
 }
 
