@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github files resolver script
 // @namespace    ilyachch/userscripts
-// @version      1.1.0
+// @version      1.2.0
 // @description  Mark files as viewed by path on Github PR page with collapse/expand functionality and improved UI layout
 // @author       ilyachch
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -197,6 +197,23 @@
         });
     }
 
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    function savePattern() {
+        const pattern = document.getElementById("gfr-input").value;
+        localStorage.setItem("gfr-input-pattern", pattern);
+    }
+
+    function loadPattern() {
+        return localStorage.getItem("gfr-input-pattern") || "";
+    }
+
     function createMenu() {
         if (document.getElementById(MENU_ID)) return;
 
@@ -245,7 +262,8 @@
         input.type = "text";
         input.id = "gfr-input";
         input.placeholder = "Enter path with * (example: */tests/*)";
-        input.value = "common/translations/";
+        input.value = loadPattern();
+        input.addEventListener("input", debounce(savePattern, 300));
         filterRow.appendChild(input);
         panel.appendChild(filterRow);
 
