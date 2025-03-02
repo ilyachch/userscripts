@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github files resolver script
 // @namespace    ilyachch/userscripts
-// @version      1.0.0
+// @version      1.1.0
 // @description  Mark files as viewed by path on Github PR page with collapse/expand functionality and improved UI layout
 // @author       ilyachch
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -216,9 +216,11 @@
             if (panel.style.display === "none") {
                 panel.style.display = "flex";
                 toggleButton.textContent = "👁";
+                localStorage.setItem("gfr-menu-state", "expanded");
             } else {
                 panel.style.display = "none";
                 toggleButton.textContent = "🙈";
+                localStorage.setItem("gfr-menu-state", "collapsed");
             }
         });
         footer.appendChild(toggleButton);
@@ -226,7 +228,14 @@
         const panel = document.createElement("div");
         panel.id = PANEL_ID;
 
-        panel.style.display = "flex";
+        const savedState = localStorage.getItem("gfr-menu-state");
+        if (savedState === "collapsed") {
+            panel.style.display = "none";
+            toggleButton.textContent = "🙈";
+        } else {
+            panel.style.display = "flex";
+            toggleButton.textContent = "👁";
+        }
 
         const filterRow = document.createElement("div");
         filterRow.classList.add("gfr-menu-row");
