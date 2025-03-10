@@ -19,5 +19,5 @@ readme:
 	@python3 .scripts/fill_links.py
 
 format:
-	@prettier --write usercss
-	@prettier --write userscripts
+	@npx prettier --write usercss
+	@npx prettier --write userscripts

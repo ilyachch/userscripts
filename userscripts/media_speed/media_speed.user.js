@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.2.2
+// @version      0.3.0
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -20,74 +20,76 @@
 const localStorageKey = "user_media_speed";
 
 const STYLE = `
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
-
-:root{
-    --font-size: 20px;
-    --font-family: 'Roboto Mono', monospace;
-    --size: 40px;
-    --border-radius: 30px;
-    --placement: 25px;
-    --margin: 10px;
-    --background-color: #2e2f34;
-    --color: #ffffff;
+.user_media_speed_control {
+    --width: 250px;
+    --default-gap: 10px;
+    --row-height: 36px;
+    --font-size: 14px;
+    --border-radius: 5px;
+    --background-color: #222;
+    --color: #fff;
     --opacity: 0.1;
     --active-opacity: 0.7;
-}
 
-.user_media_speed_control{
+    font-family: monospace;
     font-size: var(--font-size);
-    font-family: var(--font-family);
-    line-height: var(--size);
-
     display: flex;
+    flex-direction: row;
+    gap: var(--default-gap);
     position: fixed;
-    bottom: var(--placement);
-    left: var(--placement);
+    bottom: var(--default-gap);
+    left: var(--default-gap);
     z-index: 9999;
-
-    border-radius: var(--border-radius);
-    background-color: var(--background-color);
     color: var(--color);
+    border-radius: var(--border-radius);
+    opacity: var(--opacity);
     user-select: none;
     overflow: hidden;
-    opacity: var(--opacity);
+    transition: opacity 0.3s;
 }
 
-.user_media_speed_control:hover{
+.user_media_speed_control:hover {
     opacity: var(--active-opacity);
 }
 
-.user_media_speed_control_title, .user_media_speed_control_option{
+.user_media_speed_control_title, .user_media_speed_control_option {
     display: flex;
-    margin: var(--margin);
-    width: var(--size);
-    height: var(--size);
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    color: var(--color);
+    cursor: pointer;
+    text-transform: uppercase;
+    line-height: 1;
+    text-align: center;
+    width: 50px; /* Ensure all buttons are the same width */
+    height: 36px; /* Ensure all buttons are the same height */
 }
 
-.user_media_speed_control_title{
+.user_media_speed_control_title {
     font-weight: 600;
+    cursor: default;
 }
-.user_media_speed_control_option{
+
+.user_media_speed_control_option {
     font-weight: 400;
-    cursor: pointer;
     display: none;
 }
-.user_media_speed_control:hover .user_media_speed_control_option{
+
+.user_media_speed_control:hover .user_media_speed_control_option {
     display: flex;
+    flex-direction: row;
 }
-.user_media_speed_control_option.selected{
+
+.user_media_speed_control_option.selected {
     font-weight: 600;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5); /* Add box-shadow to selected element */
 }
 
-.user_media_speed_change_notification.hidden{
-    opacity: 0;
-    transition: opacity 0.1s;
-}
-
-.user_media_speed_change_notification{
+.user_media_speed_change_notification {
     border-radius: var(--border-radius);
     opacity: var(--active-opacity);
     background-color: var(--background-color);
@@ -99,10 +101,10 @@ const STYLE = `
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: var(--placement);
+    padding: var(--default-gap);
     font-size: var(--font-size);
-    font-family: var(--font-family);
-    line-height: var(--size);
+    font-family: monospace;
+    line-height: var(--row-height);
     width: 40px;
     height: 40px;
     transition: opacity 0.1s;
@@ -262,6 +264,47 @@ function create_speed_control_element() {
     }
 
     document.body.appendChild(speed_control);
+
+    let hideTimeout, collapseTimeout;
+
+    speed_control.addEventListener("mouseleave", function () {
+        collapseTimeout = setTimeout(() => {
+            speed_control.style.flexDirection = "row";
+            speed_control
+                .querySelectorAll(".user_media_speed_control_option")
+                .forEach((option) => {
+                    option.style.display = "none";
+                });
+            hideTimeout = setTimeout(() => {
+                speed_control.style.opacity = "0.1";
+            }, 15000);
+        }, 15000);
+    });
+
+    speed_control.addEventListener("mouseenter", function () {
+        clearTimeout(hideTimeout);
+        clearTimeout(collapseTimeout);
+        speed_control.style.opacity = "0.7";
+        speed_control
+            .querySelectorAll(".user_media_speed_control_option")
+            .forEach((option) => {
+                option.style.display = "flex";
+            });
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!speed_control.contains(event.target)) {
+            clearTimeout(hideTimeout);
+            clearTimeout(collapseTimeout);
+            speed_control.style.flexDirection = "row";
+            speed_control
+                .querySelectorAll(".user_media_speed_control_option")
+                .forEach((option) => {
+                    option.style.display = "none";
+                });
+            speed_control.style.opacity = "0.1";
+        }
+    });
 }
 
 function increase_speed() {
