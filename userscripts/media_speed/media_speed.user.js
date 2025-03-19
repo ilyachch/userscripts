@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Media Speed
 // @namespace    ilyachch/userscripts/scripts
-// @version      0.3.0
+// @version      0.4.0
 // @description  Change media speed
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -13,11 +13,17 @@
 // @run-at       document-start
 // @match        *://*/*
 // @grant        GM_addStyle
+// @grant        GM_registerMenuCommand
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_deleteValue
 
 // @icon         https://cdn-icons-png.flaticon.com/512/4340/4340125.png
 // ==/UserScript==
 
 const localStorageKey = "user_media_speed";
+const globalStorageKey = "global_media_speed_options";
+const siteStorageKeyPrefix = "site_media_speed_options_";
 
 const STYLE = `
 .user_media_speed_control {
@@ -113,6 +119,95 @@ const STYLE = `
 `;
 
 const SPEED_OPTIONS = [1, 1.5, 1.7, 2, 3, 4, 5, 10];
+
+function get_site_key() {
+    return siteStorageKeyPrefix + window.location.hostname;
+}
+
+function get_speed_options() {
+    let siteOptions = GM_getValue(get_site_key());
+    let globalOptions = GM_getValue(globalStorageKey);
+    return siteOptions || globalOptions || SPEED_OPTIONS;
+}
+
+function save_speed_options(options, isGlobal = false) {
+    if (isGlobal) {
+        GM_setValue(globalStorageKey, options);
+    } else {
+        GM_setValue(get_site_key(), options);
+    }
+}
+
+function reset_speed_options(isGlobal = false) {
+    if (isGlobal) {
+        GM_deleteValue(globalStorageKey);
+    } else {
+        GM_deleteValue(get_site_key());
+    }
+}
+
+function reset_speed_options_if_overwritten(isGlobal = false) {
+    if (isGlobal) {
+        if (GM_getValue(globalStorageKey)) {
+            GM_deleteValue(globalStorageKey);
+        }
+    } else {
+        if (GM_getValue(get_site_key())) {
+            GM_deleteValue(get_site_key());
+        }
+    }
+}
+
+GM_registerMenuCommand("Set Global Speed Options", function () {
+    let options = prompt(
+        "Enter speed options (comma separated)",
+        get_speed_options().join(","),
+    );
+    if (options) {
+        save_speed_options(
+            options
+                .split(",")
+                .map(Number)
+                .sort((a, b) => a - b),
+            true,
+        );
+    }
+});
+
+GM_registerMenuCommand("Set Site Speed Options", function () {
+    let options = prompt(
+        "Enter speed options (comma separated)",
+        get_speed_options().join(","),
+    );
+    if (options) {
+        save_speed_options(
+            options
+                .split(",")
+                .map(Number)
+                .sort((a, b) => a - b),
+        );
+    }
+});
+
+if (GM_getValue(globalStorageKey)) {
+    GM_registerMenuCommand("Reset Global Speed Options", function () {
+        reset_speed_options(true);
+    });
+}
+
+if (GM_getValue(get_site_key())) {
+    GM_registerMenuCommand("Reset Site Speed Options", function () {
+        reset_speed_options();
+    });
+}
+
+const currentSpeed = get_playback_speed();
+const speedOptions = get_speed_options();
+if (!speedOptions.includes(Number(currentSpeed))) {
+    speedOptions.push(Number(currentSpeed));
+    speedOptions.sort((a, b) => a - b);
+}
+
 const DEFAULT_VIDEO_STEP = 5;
 const MEDIUM_VIDEO_STEP = 30;
 const LARGE_VIDEO_STEP = 90;
@@ -242,7 +337,8 @@ function create_speed_control_element() {
 
     speed_control.appendChild(speed_control_title);
 
-    for (let speed of SPEED_OPTIONS) {
+    let speedOptions = get_speed_options();
+    for (let speed of speedOptions) {
         let speed_option = document.createElement("div");
         speed_option.classList.add("user_media_speed_control_option");
         speed_option.setAttribute("data-speed", speed);
