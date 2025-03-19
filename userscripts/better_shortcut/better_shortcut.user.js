@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Shortcut script
 // @namespace    ilyachch/userscripts
-// @version      0.0.1
+// @version      0.1.0
 // @description  Custom Script - Better Shortcut
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -12,18 +12,25 @@
 // @license      MIT
 
 // @run-at       document-end
+// @grant        GM_registerMenuCommand
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @match        https://app.shortcut.com/*
 // @icon         https://app.shortcut.com/static/images/favicon-2ac64967a4.svg
 // ==/UserScript==
 
-const css = ``
-
-let style = document.createElement('style');
-style.innerHTML = css;
-document.head.appendChild(style);
+GM_registerMenuCommand("Set Target Branch", () => {
+    const branch = prompt("Enter the target branch:", GM_getValue("targetBranch", "main"));
+    if (branch) {
+        GM_setValue("targetBranch", branch);
+        alert(`Target branch set to ${branch}`);
+    }
+});
 
 (function () {
     "use strict";
+
+    const targetBranch = GM_getValue("targetBranch", "main");
 
     document.addEventListener('mouseover', function(event) {
         const openPRButton = event.target.closest('a.action.micro.flat-white[target="_blank"][rel="noopener noreferrer"]');
@@ -33,8 +40,8 @@ document.head.appendChild(style);
                 const newButton = openPRButton.cloneNode(true);
                 const url = new URL(openPRButton.href);
                 const branchName = url.pathname.split('/compare/')[1].split('?')[0];
-                newButton.href = url.toString().replace(`/compare/${branchName}`, `/compare/master...${branchName}`);
-                newButton.textContent = 'Open PR to Master';
+                newButton.href = url.toString().replace(`/compare/${branchName}`, `/compare/${targetBranch}...${branchName}`);
+                newButton.textContent = `Open PR to ${targetBranch}`;
                 openPRButton.insertAdjacentElement('afterend', newButton);
             }
         }
