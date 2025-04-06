@@ -6,7 +6,7 @@
 * [Better Shortcut script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_shortcut/better_shortcut.user.js) - 0.1.0
 * [Better Youtube script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_youtube/better_youtube.user.js) - 0.0.2
 * [Better habr script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_habr/better_habr.user.js) - 0.4.2
-* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.1.0
+* [Better rezka script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/better_rezka/better_rezka.user.js) - 2.2.0
 * [Github files resolver script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/github_files_resolver/github_files_resolver.user.js) - 1.2.0
 * [Markdown tools script](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/markdown_tools/markdown_tools.user.js) - 0.4.2
 * [Media Speed](https://raw.githubusercontent.com/ilyachch/userscripts/main/userscripts/media_speed/media_speed.user.js) - 0.4.0

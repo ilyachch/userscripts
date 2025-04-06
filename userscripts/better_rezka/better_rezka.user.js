@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      2.1.0
+// @version      3.0.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -14,10 +14,12 @@
 // @run-at       document-end
 // @match        *://rezka.ag/*
 // @grant        GM_addStyle
+// @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
 // @icon         https://static.hdrezka.ac/templates/hdrezka/images/favicon.ico
 // ==/UserScript==
 
-const STYLE = `
+GM_addStyle(`
 .b-content__inline_item.watched .b-content__inline_item-cover::before,
 .b-content__inline_item.in-progress .b-content__inline_item-cover::before,
 .b-content__inline_item.to-watch .b-content__inline_item-cover::before,
@@ -51,9 +53,19 @@ const STYLE = `
     flex-direction: row;
     justify-content: space-between;
 }
-`;
+`);
+
+function log(message, level = "info") {
+    const levels = {
+        info: "color: white;",
+        warn: "color: orange;",
+        error: "color: red;",
+    };
+    console.log(`%c[Better Rezka] ${message}`, levels[level] || "");
+}
 
 function auto_next_episode() {
+    log("Initializing auto_next_episode...");
     if (!window.location.pathname.match(/\/\d+-.*?\.html/)) {
         return;
     }
@@ -79,6 +91,7 @@ function auto_next_episode() {
 }
 
 function add_year_links() {
+    log("Adding year links...");
     if (!window.location.pathname.match(/\/best.*?\/(\d{4})\//)) {
         return;
     }
@@ -112,6 +125,7 @@ function add_year_links() {
 }
 
 function remove_duplicates_from_newest() {
+    log("Removing duplicates from newest slider...");
     const stack_size = 8;
 
     let newest_slider_content = document.querySelector(
@@ -185,6 +199,7 @@ function remove_duplicates_from_newest() {
 }
 
 function watch_newest_slider_content_block_changes() {
+    log("Watching for changes in newest slider content...");
     const newest_slider_content = document.querySelector(
         "#newest-slider-content",
     );
@@ -200,7 +215,8 @@ function watch_newest_slider_content_block_changes() {
                 clearTimeout(timer);
                 timer = setTimeout(() => {
                     remove_duplicates_from_newest();
-                    mark_as_watched_or_in_progress();
+                    let marker = new Marker();
+                    marker.markVideosWithStatuses();
                 }, 500);
             }
         });
@@ -213,6 +229,7 @@ function watch_newest_slider_content_block_changes() {
 }
 
 function remove_confirmation_request_before_mark_as_watched() {
+    log("Removing confirmation requests for marking as watched...");
     let continue_block = document.querySelector("#videosaves-list");
     if (!continue_block) {
         return;
@@ -468,19 +485,35 @@ class Parser {
     constructor() {
         this.parser = new DOMParser();
         this.db = new Database("VideoStatusDatabase", "statuses");
+        log("Parser initialized.");
+    }
+
+    async fetchWithRetry(url, options = {}, maxRetries = 5) {
+        log(`Fetching URL: ${url} with retry mechanism...`);
+        let delay = 1000; // Initial delay in ms
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`${response.status}: ${response.statusText}`);
+                }
+                return response;
+            } catch (error) {
+                if (attempt === maxRetries) {
+                    throw error; // Rethrow if max retries reached
+                }
+                console.warn(`Request failed (attempt ${attempt}). Retrying in ${delay}ms...`);
+                await new Promise((resolve) => setTimeout(resolve, delay));
+                delay *= 2; // Exponential backoff
+            }
+        }
     }
 
     async parseWatched() {
-        const response = await fetch("/continue/");
-
-        if (!response.ok) {
-            console.error(`${response.status}: ${response.statusText}`);
-            return null;
-        }
-
+        log("Parsing watched videos...");
+        const response = await this.fetchWithRetry("/continue/");
         const htmlText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, "text/html");
+        const doc = this.parser.parseFromString(htmlText, "text/html");
 
         const continue_block = doc.querySelector("#videosaves-list");
         if (!continue_block) {
@@ -489,9 +522,7 @@ class Parser {
 
         let videoStatus = new VideoStatus();
 
-        const items = continue_block.querySelectorAll(
-            ".b-videosaves__list_item",
-        );
+        const items = continue_block.querySelectorAll(".b-videosaves__list_item");
         for (const item of items) {
             if (!item.getAttribute("id")) {
                 continue;
@@ -509,16 +540,11 @@ class Parser {
     }
 
     async fetchFavoritesByCategory(categoryURL) {
+        log(`Fetching favorites by category: ${categoryURL}`);
         const videoElements = [];
         let page = 1;
         while (true) {
-            const response = await fetch(`${categoryURL}page/${page}/`);
-            if (!response.ok) {
-                break;
-                throw new Error(
-                    `Failed to fetch folder ${categoryURL}: ${response.statusText}`,
-                );
-            }
+            const response = await this.fetchWithRetry(`${categoryURL}page/${page}/`);
             let htmlText = await response.text();
             let doc = this.parser.parseFromString(htmlText, "text/html");
             let elements = doc.querySelectorAll(".b-content__inline_item");
@@ -528,30 +554,18 @@ class Parser {
             videoElements.push(...elements);
             page++;
         }
-        const videoIds = [...videoElements].map((el) =>
-            el.getAttribute("data-id"),
-        );
-
+        const videoIds = [...videoElements].map((el) => el.getAttribute("data-id"));
         return videoIds;
     }
 
     async parseFavorites() {
+        log("Parsing favorite videos...");
         const baseUrl = "/favorites/";
-        const response = await fetch(baseUrl);
-        if (!response.ok) {
-            throw new Error(
-                `Failed to fetch favourites ${baseUrl}: ${response.statusText}`,
-            );
-        }
-
+        const response = await this.fetchWithRetry(baseUrl);
         const htmlText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, "text/html");
+        const doc = this.parser.parseFromString(htmlText, "text/html");
 
-        const categoryLinks = doc.querySelectorAll(
-            ".b-favorites_content__cats_list_link",
-        );
-
+        const categoryLinks = doc.querySelectorAll(".b-favorites_content__cats_list_link");
         const videoStatus = new VideoStatus();
 
         for (const link of categoryLinks) {
@@ -568,6 +582,7 @@ class Parser {
     }
 
     async parseMarks() {
+        log("Parsing all marks...");
         let statuses = new VideoStatus();
         const watchedStatus = await this.parseWatched();
         const favoritesStatus = await this.parseFavorites();
@@ -579,17 +594,25 @@ class Parser {
     }
 
     async parseAndSaveMarks() {
-        const videoStatus = await this.parseMarks();
-        await this.db.save("currentStatus", videoStatus.toJSON());
+        log("Parsing and saving marks...");
+        try {
+            const videoStatus = await this.parseMarks();
+            await this.db.save("currentStatus", videoStatus.toJSON());
+            log("Marks parsed and saved successfully.");
+        } catch (error) {
+            log(`Error while parsing and saving marks: ${error.message}`, "error");
+        }
     }
 }
 
 class Marker {
     constructor() {
         this.db = new Database("VideoStatusDatabase", "statuses");
+        log("Marker initialized.");
     }
 
     async getVideoStatus() {
+        log("Getting video status from database...");
         const serializedVideoStatus = await this.db.get("currentStatus");
 
         if (!serializedVideoStatus) {
@@ -600,6 +623,7 @@ class Marker {
     }
 
     async markAs(listName, videoName) {
+        log(`Marking video '${videoName}' as '${listName}'...`);
         const serializedVideoStatus = await this.db.get("currentStatus");
 
         if (!serializedVideoStatus) {
@@ -615,6 +639,7 @@ class Marker {
     }
 
     async markVideosWithStatuses() {
+        log("Marking videos with statuses...");
         const videoStatus = await this.getVideoStatus();
 
         if (!videoStatus) {
@@ -673,9 +698,11 @@ class RatingData {
 class RatingMarker {
     constructor() {
         this.parser = new DOMParser();
+        log("RatingMarker initialized.");
     }
 
     async addRatingsBlock(element) {
+        log("Adding ratings block...");
         if (element.querySelector(".ratings")) {
             return;
         }
@@ -730,6 +757,7 @@ class RatingMarker {
     }
 
     markRating() {
+        log("Marking ratings...");
         const elementsToMark = document.querySelectorAll(
             ".b-content__inline_item",
         );
@@ -749,22 +777,90 @@ class RatingMarker {
     }
 }
 
+// Переименовываем функцию createParseButton на setupParseMenu
+function setupParseMenu() {
+    log("Setting up parse menu...");
+
+    let isParsing = false;
+    let abortController = null;
+
+    function startParsing() {
+        if (isParsing) {
+            log("Parsing is already in progress.", "warn");
+            return;
+        }
+
+        isParsing = true;
+        abortController = new AbortController();
+
+        GM_registerMenuCommand("Stop Parsing", stopParsing);
+
+        retryWithExponentialBackoff(async () => {
+            const parser = new Parser();
+            await parser.parseAndSaveMarks();
+        }, abortController.signal)
+            .catch((error) => {
+                console.error("Parsing failed:", error);
+            })
+            .finally(() => {
+                isParsing = false;
+                GM_unregisterMenuCommand("Stop Parsing");
+            });
+    }
+
+    function stopParsing() {
+        if (!isParsing) {
+            log("No parsing process to stop.", "warn");
+            return;
+        }
+
+        abortController.abort();
+        isParsing = false;
+        log("Parsing aborted.", "info");
+        GM_unregisterMenuCommand("Stop Parsing");
+    }
+
+    GM_registerMenuCommand("Start Parsing", startParsing);
+}
+
+async function retryWithExponentialBackoff(task, signal, maxRetries = 10) {
+    log("Starting retry with exponential backoff...");
+    let delay = 1000; // Initial delay in ms
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        if (signal.aborted) {
+            console.log("Parsing aborted");
+            throw new Error("Aborted");
+        }
+        try {
+            await task();
+            return; // Task succeeded
+        } catch (error) {
+            if (attempt === maxRetries) {
+                throw error; // Rethrow if max retries reached
+            }
+            console.warn(`Attempt ${attempt} failed. Retrying in ${delay}ms...`);
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            delay *= 2; // Exponential backoff
+        }
+    }
+}
+
 (function () {
     "use strict";
 
-    GM_addStyle(STYLE);
-
-    const parser = new Parser();
+    log("Initializing Better Rezka script...");
     const marker = new Marker();
 
     auto_next_episode();
     add_year_links();
     remove_duplicates_from_newest();
     remove_confirmation_request_before_mark_as_watched();
-    parser.parseAndSaveMarks();
     marker.markVideosWithStatuses();
     watch_newest_slider_content_block_changes();
 
     const rating_marker = new RatingMarker();
     rating_marker.markRating();
+
+    setupParseMenu();
+    log("Better Rezka script initialized successfully.");
 })();
