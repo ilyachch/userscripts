@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better rezka script
 // @namespace    ilyachch/userscripts
-// @version      3.0.0
+// @version      3.1.0
 // @description  Custom Script - better_rezka
 // @author       ilyachch (https://github.com/ilyachch/userscripts)
 // @homepageURL  https://github.com/ilyachch/userscripts
@@ -52,6 +52,28 @@ GM_addStyle(`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.parse-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    z-index: 1000;
+}
+.parse-button.parsing {
+    background-color: #ffc107;
+}
+.parse-button.parsing:hover {
+    background-color: #dc3545;
 }
 `);
 
@@ -777,90 +799,137 @@ class RatingMarker {
     }
 }
 
-// Переименовываем функцию createParseButton на setupParseMenu
-function setupParseMenu() {
-    log("Setting up parse menu...");
+class ParseManager {
+  constructor() {
+    this.isParsing = false;
+    this.abortController = null;
+    this.button = null;
+    this.stopCommandId = null;
+  }
 
-    let isParsing = false;
-    let abortController = null;
+  setupMenu() {
+    GM_registerMenuCommand("Start Parsing", this.startParsing.bind(this));
+  }
 
-    function startParsing() {
-        if (isParsing) {
-            log("Parsing is already in progress.", "warn");
-            return;
-        }
+  setupButton() {
+    this.button = document.createElement("button");
+    this.button.classList.add("parse-button");
+    this.button.textContent = "🗘";
+    document.body.appendChild(this.button);
 
-        isParsing = true;
-        abortController = new AbortController();
+    this.button.addEventListener("mouseenter", () => {
+      if (this.isParsing) {
+        this.button.textContent = "🗙";
+      }
+    });
 
-        GM_registerMenuCommand("Stop Parsing", stopParsing);
+    this.button.addEventListener("mouseleave", () => {
+      this.updateButtonState();
+    });
 
-        retryWithExponentialBackoff(async () => {
-            const parser = new Parser();
-            await parser.parseAndSaveMarks();
-        }, abortController.signal)
-            .catch((error) => {
-                console.error("Parsing failed:", error);
-            })
-            .finally(() => {
-                isParsing = false;
-                GM_unregisterMenuCommand("Stop Parsing");
-            });
+    this.button.addEventListener("click", () => {
+      if (this.isParsing) {
+        this.stopParsing();
+      } else {
+        this.startParsing();
+      }
+    });
+  }
+
+  updateButtonState() {
+    if (this.isParsing) {
+      this.button.textContent = "⏲";
+      this.button.classList.add("parsing");
+    } else {
+      this.button.textContent = "🗘";
+      this.button.classList.remove("parsing");
+    }
+  }
+
+  async startParsing() {
+    if (this.isParsing) {
+      log("Parsing is already in progress.", "warn");
+      return;
     }
 
-    function stopParsing() {
-        if (!isParsing) {
-            log("No parsing process to stop.", "warn");
-            return;
-        }
+    this.isParsing = true;
+    this.abortController = new AbortController();
 
-        abortController.abort();
-        isParsing = false;
-        log("Parsing aborted.", "info");
-        GM_unregisterMenuCommand("Stop Parsing");
+    this.stopCommandId = GM_registerMenuCommand("Stop Parsing", this.stopParsing.bind(this));
+
+    retryWithExponentialBackoff(async () => {
+      const parser = new Parser();
+      await parser.parseAndSaveMarks();
+    }, this.abortController.signal)
+      .catch((error) => {
+        console.error("Parsing failed:", error);
+      })
+      .finally(() => {
+        this.isParsing = false;
+        if (this.stopCommandId) {
+          GM_unregisterMenuCommand(this.stopCommandId);
+          this.stopCommandId = null;
+        }
+        this.updateButtonState();
+      });
+
+    this.updateButtonState();
+  }
+
+  stopParsing() {
+    if (!this.isParsing) {
+      log("No parsing process to stop.", "warn");
+      return;
     }
 
-    GM_registerMenuCommand("Start Parsing", startParsing);
+    this.abortController.abort();
+    this.isParsing = false;
+    log("Parsing aborted.", "info");
+
+    if (this.stopCommandId) {
+      GM_unregisterMenuCommand(this.stopCommandId);
+      this.stopCommandId = null;
+    }
+
+    this.updateButtonState();
+  }
 }
 
-async function retryWithExponentialBackoff(task, signal, maxRetries = 10) {
-    log("Starting retry with exponential backoff...");
-    let delay = 1000; // Initial delay in ms
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-        if (signal.aborted) {
-            console.log("Parsing aborted");
-            throw new Error("Aborted");
-        }
-        try {
-            await task();
-            return; // Task succeeded
-        } catch (error) {
-            if (attempt === maxRetries) {
-                throw error; // Rethrow if max retries reached
-            }
-            console.warn(`Attempt ${attempt} failed. Retrying in ${delay}ms...`);
-            await new Promise((resolve) => setTimeout(resolve, delay));
-            delay *= 2; // Exponential backoff
-        }
+async function retryWithExponentialBackoff(task, signal, maxRetries = 5, initialDelay = 1000) {
+  let delay = initialDelay;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await task();
+    } catch (error) {
+      if (attempt === maxRetries || (signal && signal.aborted)) {
+        throw error;
+      }
+      console.warn(`Attempt ${attempt} failed. Retrying in ${delay}ms...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      delay *= 2; // Exponential backoff
     }
+  }
 }
 
 (function () {
-    "use strict";
+  "use strict";
 
-    log("Initializing Better Rezka script...");
-    const marker = new Marker();
+  log("Initializing Better Rezka script...");
+  const marker = new Marker();
 
-    auto_next_episode();
-    add_year_links();
-    remove_duplicates_from_newest();
-    remove_confirmation_request_before_mark_as_watched();
-    marker.markVideosWithStatuses();
-    watch_newest_slider_content_block_changes();
+  auto_next_episode();
+  add_year_links();
+  remove_duplicates_from_newest();
+  remove_confirmation_request_before_mark_as_watched();
+  marker.markVideosWithStatuses();
+  watch_newest_slider_content_block_changes();
 
-    const rating_marker = new RatingMarker();
-    rating_marker.markRating();
+  const rating_marker = new RatingMarker();
+  rating_marker.markRating();
 
-    setupParseMenu();
-    log("Better Rezka script initialized successfully.");
+  const parseManager = new ParseManager();
+  parseManager.setupMenu();
+  parseManager.setupButton();
+
+  log("Better Rezka script initialized successfully.");
 })();
